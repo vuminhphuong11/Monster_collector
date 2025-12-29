@@ -1,18 +1,19 @@
-# Các thư mục tạm do Unity tạo ra
-Library/
-Temp/
-Obj/
-Build/
-Builds/
-Logs/
-MemoryCaptures/
+# Unity GitIgnore Cleanup
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
 
-# Các file meta của thư mục tạm
-Library/*.meta
-Temp/*.meta
-Obj/*.meta
+# Meta files
+/[Ll]ibrary/*.meta
+/[Tt]emp/*.meta
+/[Oo]bj/*.meta
 
-# Các file do Visual Studio / Rider tự tạo
+# IDE files
 *.csproj
 *.unityproj
 *.sln
@@ -28,12 +29,13 @@ Obj/*.meta
 *.db
 .vs/
 .idea/
+.vsconfig
 
-# Các file hệ điều hành
+# OS files
 .DS_Store
 Thumbs.db
 
-# Các file build sản phẩm
+# Builds
 *.apk
 *.aab
 *.unitypackage
