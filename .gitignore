@@ -1,0 +1,39 @@
+# Các thư mục tạm do Unity tạo ra
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+Logs/
+MemoryCaptures/
+
+# Các file meta của thư mục tạm
+Library/*.meta
+Temp/*.meta
+Obj/*.meta
+
+# Các file do Visual Studio / Rider tự tạo
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opendb
+*.db
+.vs/
+.idea/
+
+# Các file hệ điều hành
+.DS_Store
+Thumbs.db
+
+# Các file build sản phẩm
+*.apk
+*.aab
+*.unitypackage
