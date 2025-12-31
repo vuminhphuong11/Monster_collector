@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158a649476d2fa5439246352d583a357, type: 3}
+  m_Name: Golem
+  m_EditorClassIdentifier: 
+  _name: Golem
+  description: 
+  leftSprite: {fileID: 96607484, guid: 3da696c93bffac84aa551f63eb15f60e, type: 3}
+  rightSprite: {fileID: -852990692, guid: cf7b7c97edf6f33438985c6775b0d8c2, type: 3}
+  type1: 5
+  type2: 0
+  maxHP: 73
+  attack: 69
+  defense: 67
+  spAttack: 54
+  spDefense: 75
+  speed: 20
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 21c60c1041609074cb35fb483988702b, type: 2}
+    level: 4
+  - moveBase: {fileID: 11400000, guid: b82a80fd8849dbd45b807f8c63c1c449, type: 2}
+    level: 4
+  - moveBase: {fileID: 11400000, guid: 585ee6086db372c479cbb3d68b8c6050, type: 2}
+    level: 4

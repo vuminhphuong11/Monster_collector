@@ -10,24 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 158a649476d2fa5439246352d583a357, type: 3}
-  m_Name: Chamander
+  m_Name: Worm
   m_EditorClassIdentifier: 
-  _name: Chamander
+  _name: Worm
   description: 
-  leftSprite: {fileID: 21300000, guid: 7b639ec515c410e4ebf517fc3899e3bd, type: 3}
-  rightSprite: {fileID: 21300000, guid: ade6afd9cbd5c1740bf6046d9a18b97d, type: 3}
+  leftSprite: {fileID: 572185903, guid: 1ce5e121837be2e4ea25f3889c2fcdef, type: 3}
+  rightSprite: {fileID: 2072123328, guid: 62aefd8647e70314e9e91523af3bc78c, type: 3}
   type1: 0
   type2: 1
-  maxHP: 39
-  attack: 52
-  defense: 43
+  maxHP: 61
+  attack: 70
+  defense: 52
   spAttack: 60
-  spDefense: 50
-  speed: 65
+  spDefense: 53
+  speed: 59
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: e48d07d255f09ae40ab9ede45a2d21c5, type: 2}
-    level: 1
+    level: 3
+  - moveBase: {fileID: 11400000, guid: 71078247f7f029e449a4b76cf9d2c659, type: 2}
+    level: 3
   - moveBase: {fileID: 11400000, guid: 585ee6086db372c479cbb3d68b8c6050, type: 2}
-    level: 1
-  - moveBase: {fileID: 11400000, guid: 5c90c40870c0a114a99ff2e9a2691e74, type: 2}
     level: 2
+  - moveBase: {fileID: 11400000, guid: 5c90c40870c0a114a99ff2e9a2691e74, type: 2}
+    level: 3

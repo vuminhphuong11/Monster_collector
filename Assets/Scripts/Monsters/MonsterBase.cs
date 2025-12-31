@@ -7,8 +7,8 @@ public class MonsterBase : ScriptableObject
     [SerializeField] string _name;
     [TextArea]
     [SerializeField] string description;
-    [SerializeField] Sprite frontSprite;
-    [SerializeField] Sprite backSprite;
+    [SerializeField] Sprite leftSprite;
+    [SerializeField] Sprite rightSprite;
     [SerializeField] MonsterType type1;
     [SerializeField] MonsterType type2;
     // base stats
@@ -30,11 +30,11 @@ public class MonsterBase : ScriptableObject
     }
     public Sprite FrontSprite
     {
-        get { return frontSprite; }
+        get { return leftSprite; }
     }
     public Sprite BackSprite
     {
-        get { return backSprite; }
+        get { return rightSprite; }
     }
     public MonsterType Type1
     {

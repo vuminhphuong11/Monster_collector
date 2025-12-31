@@ -27,7 +27,6 @@ public class PartyMemberUI : MonoBehaviour
             nameText.color = highlightedColor;
             levelText.color = highlightedColor;
         }
-
         else
         {
             nameText.color = Color.black;
