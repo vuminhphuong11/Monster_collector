@@ -2,8 +2,9 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
-public enum BattleState { START, PLAYERACTION, PLAYERMOVE,  ENEMYMOVE, BUSY}
+public enum BattleState { START, PLAYERACTION, PLAYERMOVE,  ENEMYMOVE, BUSY,PARTYSCREEN}
 public class BattleSystem : MonoBehaviour
 {
     [SerializeField] BattleUnit playerUnit;
@@ -17,6 +18,7 @@ public class BattleSystem : MonoBehaviour
     BattleState state;
     int currentAction;
     int currentMove;
+    int currentMember;// dungf cho party screen
     MonsterParty playerParty;
     Monster WildMonster;
 
@@ -52,6 +54,7 @@ public class BattleSystem : MonoBehaviour
 
     void OpenPartyScreen()
     {
+        state = BattleState.PARTYSCREEN;
         partyScreen.SetPartyData(playerParty.Monsters);
         partyScreen.gameObject.SetActive(true);
     }
@@ -117,11 +120,7 @@ public class BattleSystem : MonoBehaviour
             var nextMonster=playerParty.GetHealthyMonster();
             if (nextMonster != null)
             {
-                playerUnit.Setup(nextMonster);
-                playerHub.SetData(nextMonster);
-                dialogBox.SetMoveNames(playerUnit.Monster.Moves);
-                yield return dialogBox.TypeDialog("Go " +nextMonster.Base.Name + "!");
-                PlayerAction();
+                OpenPartyScreen();
             }
             else
                 OnBattleOver(false);
@@ -151,6 +150,11 @@ public class BattleSystem : MonoBehaviour
         else if (state == BattleState.PLAYERMOVE)
         {
             HandleMoveSelection();
+        }
+        else if (state == BattleState.PARTYSCREEN)
+        {
+            // Handle party screen input (not implemented in this snippet)
+            HandlePartySelection();
         }
 
     }
@@ -241,5 +245,61 @@ public class BattleSystem : MonoBehaviour
             PlayerAction();
         }
     }
+
+    void HandlePartySelection()
+    {
+        // Not implemented in this snippet
+        if(Input.GetKeyDown(KeyCode.RightArrow))
+            ++currentMember;
+        else if(Input.GetKeyDown(KeyCode.LeftArrow))
+            --currentMember;
+        else if(Input.GetKeyDown(KeyCode.DownArrow))
+            currentMember +=2;
+        else if(Input.GetKeyDown(KeyCode.UpArrow))
+            currentMember -=2;
+        currentMember =Mathf.Clamp(currentMember,0, playerParty.Monsters.Count -1);
+        partyScreen.UpdateMemberSelection(currentMember);
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            var selectedMember = playerParty.Monsters[currentMember];
+            if (selectedMember.HP <= 0)
+            {
+                partyScreen.SetMessageText("You can't send out a fainted monster!");
+                return;
+            }
+            if (selectedMember == playerUnit.Monster)
+            {
+                partyScreen.SetMessageText("This monster is already in battle!");
+                return;
+            }
+            partyScreen.gameObject.SetActive(false);
+            state = BattleState.BUSY;
+            StartCoroutine(SwitchMonster(selectedMember));
+
+        }
+        else if(Input.GetKeyDown(KeyCode.X))
+        {
+            partyScreen.gameObject.SetActive(false);
+            dialogBox.EnableDialogText(true);
+            PlayerAction();
+        }
+    }
+    IEnumerator SwitchMonster(Monster newMonster)
+    {
+        state = BattleState.BUSY;
+        if (playerUnit.Monster.HP > 0)
+        {
+            yield return dialogBox.TypeDialog("Come back " + playerUnit.Monster.Base.Name + "!");
+            playerUnit.PlayFaintAnimation();
+            yield return new WaitForSeconds(2f);
+        }
+        playerUnit.Setup(newMonster);
+        playerHub.SetData(newMonster);
+        dialogBox.SetMoveNames(newMonster.Moves);
+        yield return dialogBox.TypeDialog("Go " + newMonster.Base.Name + "!");
+        StartCoroutine(EnemyMove());
+    }
+
 }
+
 
