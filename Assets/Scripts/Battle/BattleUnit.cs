@@ -8,6 +8,9 @@ public class BattleUnit : MonoBehaviour
 {
     
     [SerializeField] bool isPlayerUnit;
+    [SerializeField] BattleHub hub;
+    public bool IsPlayerUnit { get { return isPlayerUnit; } }
+    public BattleHub Hub { get { return hub; } }
 
     Image image;
     Vector3 originalPosition;
@@ -35,6 +38,7 @@ public class BattleUnit : MonoBehaviour
             //enemy unit setup
             image.sprite = Monster.Base.FrontSprite;
         }
+        hub.SetData(Monster);
         // Reset về thông số gốc từ Awake để sẵn sàng cho trận đấu sau
         image.DOKill();
         image.color = originalColor;
@@ -101,5 +105,20 @@ public class BattleUnit : MonoBehaviour
         sequence.Join(image.transform.DOScaleY(0f, 0.5f).SetEase(Ease.InBack));
         sequence.Join(image.DOFade(0f, 0.4f));
 
+    }
+    public void PlayExitAnimation()
+    {
+        var sequence = DOTween.Sequence();
+
+        // --- GIAI ĐOẠN 1: CHUẨN BỊ (Nhún nhẹ lấy đà) ---
+        sequence.Append(image.transform.DOLocalMoveX(originalPosition.x + 30f, 0.1f).SetEase(Ease.OutQuad));
+
+        // --- GIAI ĐOẠN 2: THOÁT RA (Trượt mạnh sang trái & Mờ dần) ---
+        // Di chuyển sang trái (-500f tùy thuộc vào độ phân giải màn hình của bạn)
+        sequence.Append(image.transform.DOLocalMoveX(originalPosition.x - 500f, 0.4f).SetEase(Ease.InSine));
+        sequence.Join(image.DOFade(0f, 0.4f));
+
+        // Thu nhỏ nhẹ để tạo cảm giác Pokemon đang đi xa dần
+        sequence.Join(image.transform.DOScale(0.8f, 0.4f));
     }
 }
