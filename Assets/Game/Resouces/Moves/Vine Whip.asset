@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Vine Whip
   description: 
-  type: 0
+  type: 3
   power: 50
   accuracy: 100
   pp: 25
+  category: 1
+  effects:
+    boosts: []
+  target: 0
