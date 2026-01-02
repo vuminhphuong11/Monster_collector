@@ -12,6 +12,9 @@ public class MoveBase : ScriptableObject
     [SerializeField] int power;
     [SerializeField] int accuracy;
     [SerializeField] int pp;
+    [SerializeField] MoveCategory category;
+    [SerializeField] MoveEffect effects;
+    [SerializeField] MoveTarget target;
     public string Name
     {
         get { return _name; }
@@ -37,17 +40,46 @@ public class MoveBase : ScriptableObject
         get { return pp; }
     }
 
-    public bool IsSpecial()
+    public MoveCategory Category
     {
-        if (type == MonsterType.Metal || type == MonsterType.Water ||
-            type == MonsterType.Fire || type == MonsterType.Grass)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        get { return category; }
     }
 
+    public MoveEffect Effects
+    { 
+        get { return effects; } 
+    }
+    public MoveTarget Target
+    {
+        get { return target; }
+    }
+
+
+}
+[System.Serializable]
+public class MoveEffect 
+{
+    [SerializeField] List<StatBoost> boosts;
+
+    public List<StatBoost>Boosts
+    {
+        get { return boosts; }
+    }
+}
+[System.Serializable]
+public class StatBoost
+{
+    public Stat stat;
+    public int boost;
+}
+public enum MoveCategory
+{
+    Physical,
+    Special,
+    Status
+}
+public enum MoveTarget 
+{     
+    Foe,
+    Self
 }
