@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d3eb579e546b245b3b73c7260c77f7, type: 3}
   m_Name: Hyper Beam
   m_EditorClassIdentifier: 
-  _name: 
+  _name: Hyper Beam
   description: 
   type: 0
-  power: 0
-  accuracy: 0
-  pp: 0
+  power: 77
+  accuracy: 99
+  pp: 20
   category: 0
   effects:
     boosts: []

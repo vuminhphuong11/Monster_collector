@@ -25,7 +25,13 @@ public class BattleHub : MonoBehaviour
     }
     public IEnumerator UpdateHP()
     {
-        yield return hpBar.SetHPSmooth((float)_monster.HP / _monster.MaxHP);
+        if (_monster.HpChange == true)
+        {
+            yield return hpBar.SetHPSmooth((float)_monster.HP / _monster.MaxHP);
+            _monster.HpChange = false;
+
+        }
+            
     }
     public void UpdateStatBoosts()
     {

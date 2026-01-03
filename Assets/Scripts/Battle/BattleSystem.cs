@@ -78,6 +78,7 @@ public class BattleSystem : MonoBehaviour
     }
     void MoveSelection()
     {
+        currentMove = 0;
         state = BattleState.MOVESELECTION;
         dialogBox.EnableActionSelector(false);
         dialogBox.EnableDialogText(false);
@@ -114,6 +115,14 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
     {
+
+        bool canRunMove = sourceUnit.Monster.OnBeforeMove();
+        if (!canRunMove) 
+        { 
+            yield return ShowStatusChanges(sourceUnit.Monster);
+            yield break;
+        }
+        yield return ShowStatusChanges(sourceUnit.Monster);
         move.PP--;
         yield return dialogBox.TypeDialog(sourceUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
         sourceUnit.PlayAttackAnimation();
@@ -142,35 +151,54 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(2f);
             CheckForBattleOver(targetUnit);
         }
+        sourceUnit.Monster.OnAfterTurn();
+        yield return ShowStatusChanges(sourceUnit.Monster);
+        yield return sourceUnit.Hub.UpdateHP();
+        if (sourceUnit.Monster.HP <= 0)
+        {
+            yield return dialogBox.TypeDialog(sourceUnit.Monster.Base.Name + " fainted!");
+            sourceUnit.PlayFaintAnimation();
+            yield return new WaitForSeconds(2f);
+            CheckForBattleOver(sourceUnit);
+        }
     }
     // --- SỬA THAM SỐ ĐẦU VÀO: Monster -> BattleUnit ---
+    // Trong file BattleSystem.cs
+
     IEnumerator RunMoveEffects(Move move, BattleUnit sourceUnit, BattleUnit targetUnit)
     {
         var effects = move.Base.Effects;
 
-        // Nếu có hiệu ứng tăng/giảm chỉ số
-        if (effects.Boosts != null)
+        // --- SỬA DÒNG NÀY ---
+        // Thêm điều kiện: && effects.Boosts.Count > 0
+        // Để đảm bảo chỉ hiện bảng khi thực sự có chỉ số thay đổi
+        if (effects.Boosts != null && effects.Boosts.Count > 0)
         {
             if (move.Base.Target == MoveTarget.Self)
             {
                 sourceUnit.Monster.ApplyBoosts(effects.Boosts);
-                // MỚI: Cập nhật UI cho người dùng chiêu (Self)
                 sourceUnit.Hub.UpdateStatBoosts();
             }
             else
             {
                 targetUnit.Monster.ApplyBoosts(effects.Boosts);
-                // MỚI: Cập nhật UI cho đối thủ (Foe)
                 targetUnit.Hub.UpdateStatBoosts();
             }
+
+            // Hiện thông báo Text
+            yield return ShowStatusChanges(sourceUnit.Monster);
+            yield return ShowStatusChanges(targetUnit.Monster);
         }
 
-        // Hiện text thông báo (vẫn giữ lại để người chơi đọc)
-        yield return ShowStatusChanges(sourceUnit.Monster);
-        yield return ShowStatusChanges(targetUnit.Monster);
+        // Xử lý hiệu ứng trạng thái (Độc, Đóng băng...)
+        if (effects.Status != ConditionID.none)
+        {
+            targetUnit.Monster.SetStatus(effects.Status);
+            // Không gọi ShowStatusChanges ở đây -> Bảng và Text sẽ không hiện ngay lúc này
+        }
 
-        // MỚI: Chờ 2 giây để người chơi kịp nhìn bảng chỉ số trước khi tắt
-        if (effects.Boosts != null)
+        // Chỉ delay nêú có hiện bảng chỉ số
+        if (effects.Boosts != null && effects.Boosts.Count > 0)
         {
             yield return new WaitForSeconds(2f);
         }

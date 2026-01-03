@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d3eb579e546b245b3b73c7260c77f7, type: 3}
   m_Name: Fire Blast
   m_EditorClassIdentifier: 
-  _name: Fire
+  _name: Fire Blast
   description: 
   type: 1
   power: 50

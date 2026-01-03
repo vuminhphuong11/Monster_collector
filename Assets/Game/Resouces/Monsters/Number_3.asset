@@ -12,16 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158a649476d2fa5439246352d583a357, type: 3}
   m_Name: Number_3
   m_EditorClassIdentifier: 
-  _name: 
+  _name: Number_3
   description: 
-  leftSprite: {fileID: 0}
-  rightSprite: {fileID: 0}
-  type1: 0
-  type2: 0
-  maxHP: 0
-  attack: 0
-  defense: 0
-  spAttack: 0
-  spDefense: 0
-  speed: 0
-  learnableMoves: []
+  leftSprite: {fileID: 21300000, guid: a6d5189db0f746d47ae117c9aab76e50, type: 3}
+  rightSprite: {fileID: 21300000, guid: 5daffb1eb6427874998f86d67d4cfcab, type: 3}
+  type1: 3
+  type2: 5
+  maxHP: 66
+  attack: 77
+  defense: 55
+  spAttack: 66
+  spDefense: 77
+  speed: 77
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: e48d07d255f09ae40ab9ede45a2d21c5, type: 2}
+    level: 2
+  - moveBase: {fileID: 11400000, guid: 8d24e54b2a4c39d4d9911b603920726f, type: 2}
+    level: 4
+  - moveBase: {fileID: 11400000, guid: 21c60c1041609074cb35fb483988702b, type: 2}
+    level: 6
+  - moveBase: {fileID: 11400000, guid: 62c7f7599b18a9649929e28ff22e96a6, type: 2}
+    level: 6
+  - moveBase: {fileID: 11400000, guid: b82a80fd8849dbd45b807f8c63c1c449, type: 2}
+    level: 8
+  - moveBase: {fileID: 11400000, guid: f9bd20622994dd448b6fff8f1de6a381, type: 2}
+    level: 9

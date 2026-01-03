@@ -94,19 +94,34 @@ public enum MonsterType
     Water,
     Grass,
     Metal,
-    Earth
+    Earth,
+    // ===== HỆ MỚI THÊM =====
+    Ice,    // 6
+    Electric,// 7
+    Wind,   // 8
+    Light,  // 9
+    Dark,   // 10
+    Poison
 }
 public class TypeChart
 {
     static float[][] chart =
     {
-        //                       NONE   FIRE    WATER   GRASS   METAL   EARTH
-        /* NONE  */ new float[] {1.0f,  1.0f,   1.0f,   1.0f,   1.0f,   1.0f},
-        /* FIRE  */ new float[] {1.0f,  0.8f,   0.8f,   1.5f,   1.0f,   1.0f},
-        /* WATER */ new float[] {1.0f,  1.5f,   0.8f,   0.8f,   1.0f,   1.0f},
-        /* GRASS */ new float[] {1.0f,  0.8f,   1.5f,   0.8f,   1.0f,   1.5f},
-        /* METAL */ new float[] {1.0f,  1.0f,   1.0f,   1.0f,   0.8f,   1.5f},
-        /* EARTH */ new float[] {1.0f,  1.0f,   1.5f,   0.8f,   0.8f,   1.0f}
+        //                      NONE  FIRE  WATER  GRASS  METAL  EARTH  ICE   ELEC  WIND  LIGHT  DARK  OISON
+        /* NONE  */ new float[] {1f,   1f,   1f,   1f,     1f,   1f,    1f,    1f,   1f,   1f,   1f,   1f},
+        /* FIRE  */ new float[] {1f,  0.8f,  0.8f, 1.5f,   1f,   1f,    1.5f,  1f,   1.2f, 1f,   1f,   1f},
+        /* WATER */ new float[] {1f,  1.5f,  0.8f, 0.8f,   1f,   1f,    0.8f,  1f,   1f,   1f,   1f,   1f},
+        /* GRASS */ new float[] {1f,  0.8f,  1.5f, 0.8f,   1f,   1.5f,  1f,    1f,   0.8f, 1f,   1f,   1.2f},
+        /* METAL */ new float[] {1f,  1f,    1f,   1f,     0.8f, 1.5f,  1f,    0.8f, 1f,   1.2f, 1f,   1f},
+        /* EARTH */ new float[] {1f,  1f,    1.5f, 0.8f,   0.8f, 1f,    1f,    2f,   0.8f, 1f,   1f,   1f},
+
+        // ===== HỆ MỚI =====
+        /* ICE   */ new float[] {1f,  0.8f,  0.8f, 1.5f,   1f,   1f,    0.8f,  1f,   1.2f, 1f,   1f,   1f},
+        /* ELEC */  new float[] {1f,  1f,    2f,   0.8f,   1f,   0f,    1f,    0.8f, 1.2f, 1f,   1f,   1f},
+        /* WIND */  new float[] {1f,  1.2f,  1f,   1.2f,   1f,   1f,    1f,    0.8f, 0.8f, 1f,   1f,   1f},
+        /* LIGHT*/  new float[] {1f,  1f,    1f,   1f,     1.2f, 1f,    1f,    1f,   1f,   0.8f, 2f,   1f},
+        /* DARK */  new float[] {1f,  1f,    1f,   1f,     1f,   1f,    1f,    1f,   1f,   2f,   0.8f, 1.2f},
+        /* POISON*/ new float[] {1f,  1f,    1f,   1.5f,   1f,   0.8f,  1f,    1f,   1f,   1f,   1f,   0.8f},
     };
     public static float GetEffectiveness(MonsterType attackType, MonsterType defenseType)
     {

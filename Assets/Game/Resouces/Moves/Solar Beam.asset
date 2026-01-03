@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d3eb579e546b245b3b73c7260c77f7, type: 3}
   m_Name: Solar Beam
   m_EditorClassIdentifier: 
-  _name: 
+  _name: Solar Beam
   description: 
-  type: 0
-  power: 0
-  accuracy: 0
-  pp: 0
-  category: 0
+  type: 3
+  power: 55
+  accuracy: 99
+  pp: 33
+  category: 1
   effects:
     boosts: []
   target: 0

@@ -12,16 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158a649476d2fa5439246352d583a357, type: 3}
   m_Name: number1
   m_EditorClassIdentifier: 
-  _name: 
+  _name: number1
   description: 
-  leftSprite: {fileID: 0}
-  rightSprite: {fileID: 0}
+  leftSprite: {fileID: 21300000, guid: 19a4706ff502af1418aa48e1d60ffa32, type: 3}
+  rightSprite: {fileID: 21300000, guid: d440baf61ac87e74ea914894a4c99bd1, type: 3}
   type1: 0
-  type2: 0
-  maxHP: 0
-  attack: 0
-  defense: 0
-  spAttack: 0
-  spDefense: 0
-  speed: 0
-  learnableMoves: []
+  type2: 5
+  maxHP: 64
+  attack: 66
+  defense: 66
+  spAttack: 66
+  spDefense: 66
+  speed: 66
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 8d24e54b2a4c39d4d9911b603920726f, type: 2}
+    level: 4
+  - moveBase: {fileID: 11400000, guid: 21c60c1041609074cb35fb483988702b, type: 2}
+    level: 4
+  - moveBase: {fileID: 11400000, guid: 585ee6086db372c479cbb3d68b8c6050, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 946ab1daec9e5754db98190279efae4e, type: 2}
+    level: 3
