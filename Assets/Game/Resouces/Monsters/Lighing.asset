@@ -12,16 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 158a649476d2fa5439246352d583a357, type: 3}
   m_Name: Lighing
   m_EditorClassIdentifier: 
-  _name: 
+  _name: Lighing
   description: 
-  leftSprite: {fileID: 0}
-  rightSprite: {fileID: 0}
-  type1: 0
+  leftSprite: {fileID: 21300000, guid: d7f22f93a1d42f14882f552e233f4e73, type: 3}
+  rightSprite: {fileID: 21300000, guid: 1774e044737e33848b6365c49ca12c77, type: 3}
+  type1: 7
   type2: 0
-  maxHP: 0
-  attack: 0
-  defense: 0
-  spAttack: 0
-  spDefense: 0
-  speed: 0
-  learnableMoves: []
+  maxHP: 60
+  attack: 55
+  defense: 65
+  spAttack: 65
+  spDefense: 55
+  speed: 60
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: e48d07d255f09ae40ab9ede45a2d21c5, type: 2}
+    level: 2
+  - moveBase: {fileID: 11400000, guid: 41bd33994defc0e4895476b80fa96518, type: 2}
+    level: 3
+  - moveBase: {fileID: 11400000, guid: b82a80fd8849dbd45b807f8c63c1c449, type: 2}
+    level: 3
+  - moveBase: {fileID: 11400000, guid: 70c94cf4e1c38914cb9c3cf3804b2181, type: 2}
+    level: 3

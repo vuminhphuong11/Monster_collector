@@ -107,7 +107,7 @@ public class TypeChart
 {
     static float[][] chart =
     {
-        //                      NONE  FIRE  WATER  GRASS  METAL  EARTH  ICE   ELEC  WIND  LIGHT  DARK  OISON
+        //                      NONE  FIRE  WATER  GRASS  METAL  EARTH  ICE   ELEC  WIND  LIGHT  DARK  POISON
         /* NONE  */ new float[] {1f,   1f,   1f,   1f,     1f,   1f,    1f,    1f,   1f,   1f,   1f,   1f},
         /* FIRE  */ new float[] {1f,  0.8f,  0.8f, 1.5f,   1f,   1f,    1.5f,  1f,   1.2f, 1f,   1f,   1f},
         /* WATER */ new float[] {1f,  1.5f,  0.8f, 0.8f,   1f,   1f,    0.8f,  1f,   1f,   1f,   1f,   1f},

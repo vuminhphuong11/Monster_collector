@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class ConditionsDB 
 {
-    
+    public static void Init()
+    {
+        foreach (var kvp in  Conditions)
+        {
+            var conditionId = kvp.Key;
+            var condition = kvp.Value;
+            condition.id=conditionId;
+        }
+    }
     public static Dictionary<ConditionID, Condition> Conditions { get; set; } = new Dictionary<ConditionID, Condition>()
     {
         {
@@ -95,9 +103,42 @@ public class ConditionsDB
             }
 
         },
+        //volatile status
+        {
+            ConditionID.Cfs, new Condition()
+            {
+                Name ="Confusion",
+                StartMessage="has been Confused",
+                OnStart = (Monster monster) =>
+                {
+                    // sleep for 1-3 turn
+                    monster.VolatileStatusTime= Random.Range(1,4);
+                    Debug.Log($"Will be confused for {monster.VolatileStatusTime} moves!");
+
+                },
+                OnBeforeMove = (Monster monster) =>
+                {
+                    if (monster.VolatileStatusTime <= 0)
+                    {
+                        monster.CureVolatileStatus();
+                        monster.StatusChanges.Enqueue($"{monster.Base.Name} kicked out of confusion!");
+                        return true;
+                    }
+                    monster.VolatileStatusTime--;
+                    //50 khar nangw move
+                    if(Random.Range(1,3)==1) return true;
+                    // hurt by confusion
+                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is Confused!");
+                    monster.UpdateHp(monster.MaxHP/8);
+                    monster.StatusChanges.Enqueue($"It hurt iself due to Confusion!");
+                    return false;
+                }
+            }
+
+        },
     };
 }
 public enum ConditionID
 {
-    none,psn,brn, slp, par,frz
+    none,psn,brn,slp, par,frz,Cfs
 }

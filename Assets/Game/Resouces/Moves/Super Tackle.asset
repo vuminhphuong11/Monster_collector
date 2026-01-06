@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57d3eb579e546b245b3b73c7260c77f7, type: 3}
-  m_Name: Fire Blast
+  m_Name: Super Tackle
   m_EditorClassIdentifier: 
-  _name: Fire Blast
+  _name: Super Tackle
   description: 
-  type: 1
-  power: 50
+  type: 0
+  power: 0
   accuracy: 100
-  pp: 30
+  pp: 10
   category: 2
   effects:
     boosts: []
-    status: 2
+    status: 0
+    volatileStatus: 6
   target: 0

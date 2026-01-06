@@ -27,8 +27,12 @@ public class Monster
 
     public int StatusTime { get; set; }
 
+    public Condition VolatileStatus { get; private set; }
+    public int VolatileStatusTime { get; set; }
+
     public Queue<string> StatusChanges { get; private set; }= new Queue<string>();
     public bool HpChange { get;  set; }
+    public event System.Action OnStatusChange;
 
     
     public void Init()
@@ -50,6 +54,8 @@ public class Monster
         CaculateStats();    
         HP = MaxHP;
         ResetStatBoosts();
+        Status = null;
+        VolatileStatus = null;
 
 
     }
@@ -170,13 +176,29 @@ public class Monster
 
     public void SetStatus(ConditionID conditionID)
     {
+        if (Status != null) return;
         Status = ConditionsDB.Conditions[conditionID];
         Status?.OnStart?.Invoke(this);
         StatusChanges.Enqueue($"{Base.Name} {Status.StartMessage}");
+        OnStatusChange?.Invoke();
     }
     public void CureStatus()
     {
         Status = null;
+        OnStatusChange?.Invoke();
+    }
+    public void SetVolatileStatus(ConditionID conditionID)
+    {
+        if (VolatileStatus != null) return;
+        VolatileStatus = ConditionsDB.Conditions[conditionID];
+        VolatileStatus?.OnStart?.Invoke(this);
+        StatusChanges.Enqueue($"{Base.Name} {VolatileStatus.StartMessage}");
+        
+    }
+    public void CureVolatileStatus()
+    {
+        VolatileStatus = null;
+    
     }
     public Move GetRandomMove()
     {
@@ -185,11 +207,22 @@ public class Monster
     }
     public bool OnBeforeMove()
     {
+        bool canPerformMove = true;
         if (Status?.OnBeforeMove != null)
         {
-            return Status.OnBeforeMove(this);
+            if (Status.OnBeforeMove(this))
+            {
+                canPerformMove = false;
+            }
         }
-        return true;
+        if (VolatileStatus?.OnBeforeMove != null)
+        {
+            if (VolatileStatus.OnBeforeMove(this))
+            {
+                canPerformMove = false;
+            }
+        }
+        return canPerformMove;
     }
     public void OnAfterTurn()
     {
@@ -197,9 +230,14 @@ public class Monster
         {
             Status.OnAfterTurn?.Invoke(this);
         }
+        if (VolatileStatus != null) // Kiểm tra xem quái có đang bị dính hiệu ứng không
+        { 
+            VolatileStatus.OnAfterTurn?.Invoke(this);
+        }
     }
     public void OnBattleOver()
     {
+        VolatileStatus = null;
         ResetStatBoosts();
     }   
 }

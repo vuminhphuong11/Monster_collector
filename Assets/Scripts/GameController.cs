@@ -16,6 +16,10 @@ public class GameController : MonoBehaviour
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
     GameState state;
+    private void Awake()
+    {
+        ConditionsDB.Init();
+    }
 
     private void Start()
     {

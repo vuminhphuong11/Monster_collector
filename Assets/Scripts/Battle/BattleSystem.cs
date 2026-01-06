@@ -120,6 +120,7 @@ public class BattleSystem : MonoBehaviour
         if (!canRunMove) 
         { 
             yield return ShowStatusChanges(sourceUnit.Monster);
+            yield return sourceUnit.Hub.UpdateHP();
             yield break;
         }
         yield return ShowStatusChanges(sourceUnit.Monster);
@@ -150,6 +151,7 @@ public class BattleSystem : MonoBehaviour
             targetUnit.PlayFaintAnimation();
             yield return new WaitForSeconds(2f);
             CheckForBattleOver(targetUnit);
+            if (state == BattleState.BATTLEOVER) yield break;
         }
         sourceUnit.Monster.OnAfterTurn();
         yield return ShowStatusChanges(sourceUnit.Monster);
@@ -169,9 +171,6 @@ public class BattleSystem : MonoBehaviour
     {
         var effects = move.Base.Effects;
 
-        // --- SỬA DÒNG NÀY ---
-        // Thêm điều kiện: && effects.Boosts.Count > 0
-        // Để đảm bảo chỉ hiện bảng khi thực sự có chỉ số thay đổi
         if (effects.Boosts != null && effects.Boosts.Count > 0)
         {
             if (move.Base.Target == MoveTarget.Self)
@@ -189,12 +188,17 @@ public class BattleSystem : MonoBehaviour
             yield return ShowStatusChanges(sourceUnit.Monster);
             yield return ShowStatusChanges(targetUnit.Monster);
         }
-
-        // Xử lý hiệu ứng trạng thái (Độc, Đóng băng...)
+        //Status
         if (effects.Status != ConditionID.none)
         {
             targetUnit.Monster.SetStatus(effects.Status);
-            // Không gọi ShowStatusChanges ở đây -> Bảng và Text sẽ không hiện ngay lúc này
+           
+        }
+        //VolatileStatus
+        if (effects.VolatileStatus != ConditionID.none)
+        {
+            targetUnit.Monster.SetVolatileStatus(effects.VolatileStatus);
+            
         }
 
         // Chỉ delay nêú có hiện bảng chỉ số
