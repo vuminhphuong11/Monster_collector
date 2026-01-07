@@ -16,9 +16,13 @@ MonoBehaviour:
   description: 
   type: 2
   power: 88
-  accuracy: 99
-  pp: 22
+  accuracy: 100
+  alwaysHits: 0
+  pp: 5
   category: 1
   effects:
     boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries: []
   target: 0

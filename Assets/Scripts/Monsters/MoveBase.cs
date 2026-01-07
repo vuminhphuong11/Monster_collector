@@ -11,9 +11,12 @@ public class MoveBase : ScriptableObject
     [SerializeField] MonsterType type;
     [SerializeField] int power;
     [SerializeField] int accuracy;
+    [SerializeField] bool alwaysHits;
     [SerializeField] int pp;
     [SerializeField] MoveCategory category;
     [SerializeField] MoveEffect effects;
+    [SerializeField] List<SecondaryEffects> secondaries;
+    
     [SerializeField] MoveTarget target;
     public string Name
     {
@@ -35,6 +38,9 @@ public class MoveBase : ScriptableObject
     {
         get { return accuracy; }
     }
+
+    public bool AlwaysHits
+    { get { return alwaysHits; } }
     public int PP
     {
         get { return pp; }
@@ -48,6 +54,10 @@ public class MoveBase : ScriptableObject
     public MoveEffect Effects
     { 
         get { return effects; } 
+    }
+    public List<SecondaryEffects> Secondaries
+    {
+        get { return secondaries; }
     }
     public MoveTarget Target
     {
@@ -75,6 +85,20 @@ public class MoveEffect
     public ConditionID VolatileStatus
     {
         get { return volatileStatus; }
+    }
+}
+[System.Serializable]
+public class SecondaryEffects :MoveEffect
+{
+    [SerializeField] int chance;
+    [SerializeField] MoveTarget target;
+    public int Chance
+    { 
+        get { return chance; }
+    }
+    public MoveTarget Target
+    {
+        get { return target; }
     }
 }
 [System.Serializable]

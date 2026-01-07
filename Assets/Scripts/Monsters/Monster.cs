@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 [System.Serializable]
@@ -20,6 +21,7 @@ public class Monster
     }
     public int HP { get; set; }
     public List<Move> Moves { get; set; }
+    public Move CurrentMove { get; set; }
     public Dictionary<Stat, int> Stats{ get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
 
@@ -80,6 +82,8 @@ public class Monster
             { Stat.SpAttack, 0 },
             { Stat.SpDefense, 0 },
             { Stat.Speed, 0 },
+            { Stat.Accuracy, 0 },
+            {Stat.Evasion, 0 },
         };
     }
 
@@ -202,8 +206,18 @@ public class Monster
     }
     public Move GetRandomMove()
     {
-        int r = Random.Range(0, Moves.Count);
-        return Moves[r];
+        // neu enemy ma het chieu co trong pp thi no se dung dc cac chieu khac vo han, de phong nguoi choi danh ma con nay no het chieu va pp
+        var moveWithPP = Moves.Where(x=>x.PP>0).ToList();
+        if (moveWithPP.Count > 0)
+        {
+            int r = Random.Range(0, moveWithPP.Count);
+            return moveWithPP[r];
+        }
+        else
+        {
+            int r =Random.Range(0, Moves.Count);
+            return Moves[r];
+        }
     }
     public bool OnBeforeMove()
     {

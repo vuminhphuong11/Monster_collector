@@ -4,7 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-public enum BattleState { START, ACTIONSELECTION, MOVESELECTION,  PERFORMMOVE, BUSY,PARTYSCREEN,BATTLEOVER}
+public enum BattleState { START, ACTIONSELECTION, MOVESELECTION,  RUNINGTURN, BUSY,PARTYSCREEN,BATTLEOVER}
+public enum BattleAction { Move, SwitchMonster,UseItem,Run}
 public class BattleSystem : MonoBehaviour
 {
     [SerializeField] BattleUnit playerUnit;
@@ -14,6 +15,7 @@ public class BattleSystem : MonoBehaviour
 
     public event Action<bool> OnBattleOver;
     BattleState state;
+    BattleState? preState;
     int currentAction;
     int currentMove;
     int currentMember;// dungf cho party screen
@@ -38,23 +40,10 @@ public class BattleSystem : MonoBehaviour
 
         yield return dialogBox.TypeDialog("A wild " + enemyUnit.Monster.Base.Name + " appeared!");
 
-        
-        ChooseFirstTurn();
+
+        ActionSelection();
     }
 
-    void ChooseFirstTurn()
-    {
-        if (playerUnit.Monster.Speed >= enemyUnit.Monster.Speed)
-        {
-            //Player goes first
-            ActionSelection();
-        }
-        else
-        {
-            //Enemy goes first
-            StartCoroutine( EnemyMove());
-        }
-    }
 
     void BattleOver(bool won)
     {
@@ -85,29 +74,49 @@ public class BattleSystem : MonoBehaviour
         dialogBox.EnableMoveSelector(true);
     }
 
-    IEnumerator PlayerMove()
+    IEnumerator RunTurns(BattleAction playerAction)
     {
-        state = BattleState.PERFORMMOVE;
-        var move = playerUnit.Monster.Moves[currentMove];
-        yield return RunMove(playerUnit, enemyUnit, move);
-
-        //if the battle stat was not changed by RunMove then go to next step
-        if (state == BattleState.PERFORMMOVE)
+        state = BattleState.RUNINGTURN;
+        if (playerAction == BattleAction.Move)
         {
-            StartCoroutine(EnemyMove());
+            playerUnit.Monster.CurrentMove = playerUnit.Monster.Moves[currentMove];
+            enemyUnit.Monster.CurrentMove = enemyUnit.Monster.GetRandomMove();
+            // check who go first
+            bool playerGoesFirst = playerUnit.Monster.Speed>= enemyUnit.Monster.Speed;
+
+            var firstUnit =(playerGoesFirst)?playerUnit:enemyUnit;
+            var secondUnit = (playerGoesFirst) ? enemyUnit:playerUnit;
+            var secondMonster = secondUnit.Monster;
+            //First turn
+            yield return RunMove(firstUnit, secondUnit,firstUnit.Monster.CurrentMove);
+            yield return RunAfterTurn(firstUnit);
+            if (state== BattleState.BATTLEOVER) yield break;
+            if (secondMonster.HP > 0)
+            {
+                //Second Turn
+                yield return RunMove(secondUnit, firstUnit, secondUnit.Monster.CurrentMove);
+                yield return RunAfterTurn(secondUnit);
+                if (state == BattleState.BATTLEOVER) yield break;
+
+            }
+
+
         }
-        
-       
-    }
-
-    IEnumerator EnemyMove()
-    {
-        state = BattleState.PERFORMMOVE;
-        var move = enemyUnit.Monster.GetRandomMove();
-        yield return RunMove(enemyUnit, playerUnit, move);
-
-        //if the battle stat was not changed by RunMove then go to next step
-        if (state == BattleState.PERFORMMOVE)
+        else
+        {
+            if(playerAction == BattleAction.SwitchMonster)
+            {
+                var selectedMonster = playerParty.Monsters[currentMember];
+                state = BattleState.BUSY;
+                yield return SwitchMonster(selectedMonster);
+            }
+            //enemy turn
+            var enemyMove = enemyUnit.Monster.GetRandomMove();
+            yield return RunMove(enemyUnit,playerUnit,enemyMove);
+            yield return RunAfterTurn(enemyUnit);
+            if (state == BattleState.BATTLEOVER) yield break;
+        }
+        if(state!= BattleState.BATTLEOVER)
         {
             ActionSelection();
         }
@@ -126,54 +135,62 @@ public class BattleSystem : MonoBehaviour
         yield return ShowStatusChanges(sourceUnit.Monster);
         move.PP--;
         yield return dialogBox.TypeDialog(sourceUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
-        sourceUnit.PlayAttackAnimation();
-
-        yield return new WaitForSeconds(1f);
-        targetUnit.PlayHitAnimation();
-
-        if (move.Base.Category == MoveCategory.Status)
+        if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
         {
-            // --- SỬA DÒNG NÀY: Truyền cả sourceUnit và targetUnit vào ---
-            yield return RunMoveEffects(move, sourceUnit, targetUnit);
-            // ------------------------------------------------------------
+            sourceUnit.PlayAttackAnimation();
+
+            yield return new WaitForSeconds(1f);
+            targetUnit.PlayHitAnimation();
+
+            if (move.Base.Category == MoveCategory.Status)
+            {
+                // --- SỬA DÒNG NÀY: Truyền cả sourceUnit và targetUnit vào ---
+                yield return RunMoveEffects(move.Base.Effects, sourceUnit, targetUnit,move.Base.Target);
+                // ------------------------------------------------------------
+            }
+            else
+            {
+                var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster);
+                yield return targetUnit.Hub.UpdateHP();
+                yield return ShowDamageDetails(damageDetails);
+            }
+            if(move.Base.Secondaries != null && move.Base.Secondaries.Count>0&& targetUnit.Monster.HP>0)
+            {
+                foreach (var secondary in move.Base.Secondaries)
+                {
+                    var rnd = UnityEngine.Random.Range(1, 101);
+                    if (rnd < secondary.Chance)
+                    {
+                        yield return RunMoveEffects(secondary, sourceUnit, targetUnit, secondary.Target);
+                    }
+                }
+            } 
+            // ... (phần code xử lý ngất giữ nguyên) ...
+            if (targetUnit.Monster.HP <= 0)
+            {
+                yield return dialogBox.TypeDialog(targetUnit.Monster.Base.Name + " fainted!");
+                targetUnit.PlayFaintAnimation();
+                yield return new WaitForSeconds(2f);
+                CheckForBattleOver(targetUnit);
+                if (state == BattleState.BATTLEOVER) yield break;
+            }
         }
         else
         {
-            var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster);
-            yield return targetUnit.Hub.UpdateHP();
-            yield return ShowDamageDetails(damageDetails);
+            yield return dialogBox.TypeDialog(sourceUnit.Monster.Base.Name + "'s Attack missed!");
         }
-
-        // ... (phần code xử lý ngất giữ nguyên) ...
-        if (targetUnit.Monster.HP <= 0)
-        {
-            yield return dialogBox.TypeDialog(targetUnit.Monster.Base.Name + " fainted!");
-            targetUnit.PlayFaintAnimation();
-            yield return new WaitForSeconds(2f);
-            CheckForBattleOver(targetUnit);
-            if (state == BattleState.BATTLEOVER) yield break;
-        }
-        sourceUnit.Monster.OnAfterTurn();
-        yield return ShowStatusChanges(sourceUnit.Monster);
-        yield return sourceUnit.Hub.UpdateHP();
-        if (sourceUnit.Monster.HP <= 0)
-        {
-            yield return dialogBox.TypeDialog(sourceUnit.Monster.Base.Name + " fainted!");
-            sourceUnit.PlayFaintAnimation();
-            yield return new WaitForSeconds(2f);
-            CheckForBattleOver(sourceUnit);
-        }
+        
     }
     // --- SỬA THAM SỐ ĐẦU VÀO: Monster -> BattleUnit ---
     // Trong file BattleSystem.cs
 
-    IEnumerator RunMoveEffects(Move move, BattleUnit sourceUnit, BattleUnit targetUnit)
+    IEnumerator RunMoveEffects(MoveEffect effects, BattleUnit sourceUnit, BattleUnit targetUnit,MoveTarget moveTarget)
     {
-        var effects = move.Base.Effects;
+        
 
         if (effects.Boosts != null && effects.Boosts.Count > 0)
         {
-            if (move.Base.Target == MoveTarget.Self)
+            if (moveTarget == MoveTarget.Self)
             {
                 sourceUnit.Monster.ApplyBoosts(effects.Boosts);
                 sourceUnit.Hub.UpdateStatBoosts();
@@ -207,7 +224,51 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(2f);
         }
     }
-
+    
+    IEnumerator RunAfterTurn(BattleUnit sourceUnit)
+    {
+        if (state == BattleState.BATTLEOVER) yield break;
+        yield return new WaitUntil(() => state==BattleState.RUNINGTURN);
+        sourceUnit.Monster.OnAfterTurn();
+        yield return ShowStatusChanges(sourceUnit.Monster);
+        yield return sourceUnit.Hub.UpdateHP();
+        if (sourceUnit.Monster.HP <= 0)
+        {
+            yield return dialogBox.TypeDialog(sourceUnit.Monster.Base.Name + " fainted!");
+            sourceUnit.PlayFaintAnimation();
+            yield return new WaitForSeconds(2f);
+            CheckForBattleOver(sourceUnit);
+        }
+    }
+    bool CheckIfMoveHits(Move move,Monster source,Monster target)
+    {
+        if(move.Base.AlwaysHits== true)
+        {
+            return true;
+        }
+        float moveAcruracy = move.Base.Accuracy;
+        int accuracy = source.StatBoosts[Stat.Accuracy];
+        int evasion = target.StatBoosts[Stat.Evasion];
+        float[] boostValues = { 1f, 4f/3f, 5f/3f, 2f, 7f/3f, 8f/3f, 3f };
+        if (accuracy > 0)
+        {
+            moveAcruracy *= boostValues[accuracy];
+        }
+        else
+        {
+            moveAcruracy /= boostValues[-accuracy];
+        }
+        if (evasion > 0)
+        {
+            moveAcruracy /= boostValues[evasion];
+        }
+        else
+        {
+            moveAcruracy *= boostValues[-evasion];
+        }
+        return (UnityEngine.Random.Range(1, 101) <= moveAcruracy);
+        
+    }
 
     IEnumerator ShowStatusChanges(Monster monster)
     {
@@ -244,7 +305,7 @@ public class BattleSystem : MonoBehaviour
         else if (damageDetails.TypeEffectiveness < 1f)
             yield return dialogBox.TypeDialog("It's not very effective...");
     }
-
+    
     public void HandleUpdate()
     {
         if (state == BattleState.ACTIONSELECTION)
@@ -299,6 +360,7 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 2)
             {
                 //Monster
+                preState = state;
                 OpenPartyScreen();
                
             }
@@ -334,13 +396,20 @@ public class BattleSystem : MonoBehaviour
         {
             if (currentMove % 2 != 0)
                 currentMove--;
-        }
+        }//
+        // neu co loi thi xoa dong duoi day
+        currentMove = Mathf.Clamp(currentMove, 0, playerUnit.Monster.Moves.Count - 1);
         dialogBox.UpdateMoveSelection(currentMove, playerUnit.Monster.Moves[currentMove]);
         if(Input.GetKeyDown(KeyCode.Z))
         {
+            var move = playerUnit.Monster.Moves[currentMove];
+            if (move.PP==0)
+            {
+                return;
+            }
             dialogBox.EnableMoveSelector(false);
             dialogBox.EnableDialogText(true);
-            StartCoroutine( PlayerMove());
+            StartCoroutine( RunTurns(BattleAction.Move));
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
@@ -377,23 +446,34 @@ public class BattleSystem : MonoBehaviour
                 return;
             }
             partyScreen.gameObject.SetActive(false);
-            state = BattleState.BUSY;
-            StartCoroutine(SwitchMonster(selectedMember));
+            if (preState == BattleState.ACTIONSELECTION)
+            {
+                preState = null;
+                StartCoroutine(RunTurns(BattleAction.SwitchMonster));
+            }
+            else
+            {
+                state = BattleState.BUSY;
+                StartCoroutine(SwitchMonster(selectedMember));
+            }
 
         }
-        else if(Input.GetKeyDown(KeyCode.X))
+        else if (Input.GetKeyDown(KeyCode.X))
         {
-            partyScreen.gameObject.SetActive(false);
-            dialogBox.EnableDialogText(true);
-            ActionSelection();
+            // Chỉ cho thoát nếu Pokemon hiện tại chưa chết (nghĩa là người chơi tự mở menu lên xem)
+            if (playerUnit.Monster.HP > 0)
+            {
+                partyScreen.gameObject.SetActive(false);
+                dialogBox.EnableDialogText(true);
+                ActionSelection();
+            }
         }
     }
     IEnumerator SwitchMonster(Monster newMonster)
     {
-        bool currentMonsterFainted = true;
         if (playerUnit.Monster.HP > 0)
         {
-            currentMonsterFainted = false;
+            
             yield return dialogBox.TypeDialog("Come back " + playerUnit.Monster.Base.Name + "!");
             playerUnit.PlayExitAnimation();
             yield return new WaitForSeconds(2f);
@@ -401,12 +481,7 @@ public class BattleSystem : MonoBehaviour
         playerUnit.Setup(newMonster);
         dialogBox.SetMoveNames(newMonster.Moves);
         yield return dialogBox.TypeDialog("Go " + newMonster.Base.Name + "!");
-        if (currentMonsterFainted)
-            ChooseFirstTurn();
-        else
-        {
-            StartCoroutine(EnemyMove());
-        }
+        state = BattleState.RUNINGTURN;
     }
 
 }

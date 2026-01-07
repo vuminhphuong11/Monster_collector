@@ -63,7 +63,8 @@ public class BattleHub : MonoBehaviour
     {
         if (statBoostHUD != null)
         {
-            statBoostHUD.SetStatBoosts(_monster.StatBoosts);
+            statBoostHUD.SetStatBoosts(_monster);
+            
         }
     }
 }

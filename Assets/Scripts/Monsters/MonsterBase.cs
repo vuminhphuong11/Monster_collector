@@ -138,5 +138,8 @@ public enum Stat
     Defense,
     SpAttack,
     SpDefense,
-    Speed
+    Speed,
+    // day khong phai la status ma chi them vao de ma thay doi acuracy khi ma monster bi giam thi no cung giam acuracy xuong cua chieu thuc nao day
+    Accuracy,
+    Evasion,
 }

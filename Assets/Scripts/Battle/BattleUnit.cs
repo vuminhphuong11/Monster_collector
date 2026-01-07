@@ -87,20 +87,11 @@ public class BattleUnit : MonoBehaviour
     }
     public void PlayFaintAnimation()
     {
-        // Tạo sequence mới
         var sequence = DOTween.Sequence();
-
-        // --- GIAI ĐOẠN 1: SHOCK (Chớp trắng & Nảy nhẹ) ---
         sequence.Append(image.DOColor(Color.white, 0.05f).SetLoops(4, LoopType.Yoyo));
         sequence.Join(image.transform.DOLocalMoveY(originalPosition.y + 20f, 0.15f).SetEase(Ease.OutQuad));
-
-        // --- GIAI ĐOẠN 2: SUY YẾU (Đổi màu xám & Rung lắc) ---
-        // Sử dụng màu xám để tạo cảm giác mất sức sống
         sequence.Append(image.DOColor(Color.gray, 0.2f));
         sequence.Join(image.transform.DOShakePosition(0.4f, strength: new Vector3(20, 0, 0), vibrato: 15));
-
-        // --- GIAI ĐOẠN 3: ĐĂNG XUẤT (Chìm xuống & Thu dẹt) ---
-        // MoveY xuống kết hợp ScaleY về 0 để tuyệt đối không lộ chân
         sequence.Append(image.transform.DOLocalMoveY(originalPosition.y - 120f, 0.5f).SetEase(Ease.InBack));
         sequence.Join(image.transform.DOScaleY(0f, 0.5f).SetEase(Ease.InBack));
         sequence.Join(image.DOFade(0f, 0.4f));
@@ -110,15 +101,9 @@ public class BattleUnit : MonoBehaviour
     {
         var sequence = DOTween.Sequence();
 
-        // --- GIAI ĐOẠN 1: CHUẨN BỊ (Nhún nhẹ lấy đà) ---
         sequence.Append(image.transform.DOLocalMoveX(originalPosition.x + 30f, 0.1f).SetEase(Ease.OutQuad));
-
-        // --- GIAI ĐOẠN 2: THOÁT RA (Trượt mạnh sang trái & Mờ dần) ---
-        // Di chuyển sang trái (-500f tùy thuộc vào độ phân giải màn hình của bạn)
         sequence.Append(image.transform.DOLocalMoveX(originalPosition.x - 500f, 0.4f).SetEase(Ease.InSine));
         sequence.Join(image.DOFade(0f, 0.4f));
-
-        // Thu nhỏ nhẹ để tạo cảm giác Pokemon đang đi xa dần
         sequence.Join(image.transform.DOScale(0.8f, 0.4f));
     }
 }
