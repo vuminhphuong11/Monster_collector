@@ -6,7 +6,8 @@ using UnityEngine;
 public enum GameState
 {
     FreeRoam,
-    Battle
+    Battle,
+    Dialog
 }
 public class GameController : MonoBehaviour
 {
@@ -25,6 +26,19 @@ public class GameController : MonoBehaviour
     {
         playerController.OnEncountered += StartBattle;
         battleSystem.OnBattleOver += EndBattle;
+
+        DiaLogManager.Instance.OnShowDialog += () =>
+        {
+            state = GameState.Dialog;
+        };
+        DiaLogManager.Instance.OnCloseDialog += () =>
+        {
+            if (state == GameState.Dialog)
+            {
+                state = GameState.FreeRoam;
+            }
+                
+        };
     }
 
     void EndBattle(bool won)
@@ -57,6 +71,11 @@ public class GameController : MonoBehaviour
         {
             // Xử lý logic khi ở trạng thái Battle
             battleSystem.HandleUpdate();
+        }
+        else if (state == GameState.Dialog)
+        {
+            // su ly logic khi ma dang giao tiep vs npc
+            DiaLogManager.Instance.HandleUpdate();
         }
     }
 }
