@@ -38,6 +38,7 @@ public class BattleUnit : MonoBehaviour
             //enemy unit setup
             image.sprite = Monster.Base.FrontSprite;
         }
+        hub.gameObject.SetActive(true);
         hub.SetData(Monster);
         // Reset về thông số gốc từ Awake để sẵn sàng cho trận đấu sau
         image.DOKill();
@@ -45,6 +46,10 @@ public class BattleUnit : MonoBehaviour
         image.transform.localPosition = originalPosition;
         image.transform.localScale = originalScale;
         PlayEnterAnimation();
+    }
+    public void Clear()
+    {
+        hub.gameObject.SetActive(false);
     }
     public void PlayEnterAnimation()
     {

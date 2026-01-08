@@ -7,7 +7,9 @@ public enum GameState
 {
     FreeRoam,
     Battle,
-    Dialog
+    Dialog,
+    Cutscene
+    
 }
 public class GameController : MonoBehaviour
 {
@@ -17,8 +19,10 @@ public class GameController : MonoBehaviour
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
     GameState state;
+    public static GameController Instance {  get; private set; }
     private void Awake()
     {
+        Instance = this;
         ConditionsDB.Init();
     }
 
@@ -26,6 +30,15 @@ public class GameController : MonoBehaviour
     {
         playerController.OnEncountered += StartBattle;
         battleSystem.OnBattleOver += EndBattle;
+        playerController.OnEnterBossView += (Collider2D bossCollider) =>
+        {
+            var boss = bossCollider.GetComponentInParent<BossController>();
+            if (boss != null)
+            {
+                state=GameState.Cutscene;
+                StartCoroutine(boss.TriggerBossBattle(playerController));
+            }
+        };
 
         DiaLogManager.Instance.OnShowDialog += () =>
         {
@@ -57,6 +70,17 @@ public class GameController : MonoBehaviour
         var playerParty = playerController.GetComponent<MonsterParty>();
         var wildMonster = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildMonster();
         battleSystem.StartBattle(playerParty,wildMonster);
+
+    }
+    public void StartBossBattle(BossController boss)
+    {
+        state = GameState.Battle;
+        battleSystem.gameObject.SetActive(true);
+        worldCamera.gameObject.SetActive(false);
+
+        var playerParty = playerController.GetComponent<MonsterParty>();
+        var bossParty =boss.GetComponent<MonsterParty>();
+        battleSystem.StartBossBattle(playerParty, bossParty);
 
     }
 

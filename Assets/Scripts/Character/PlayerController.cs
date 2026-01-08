@@ -5,10 +5,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    
 
 
+    [SerializeField] Sprite sprite;
+    [SerializeField] string name;
     public event Action OnEncountered;
+    public event Action<Collider2D> OnEnterBossView;
+    public string Name
+    {
+        get => name;
+    }
+    public Sprite Sprite
+    {
+        get => sprite;
+    }
 
 
 
@@ -29,7 +39,7 @@ public class PlayerController : MonoBehaviour
             if(input.x != 0) input.y = 0; // Prevent diagonal movement
             if (input != Vector2.zero)
             {
-                StartCoroutine(character.Move(input,CheckForEncounters));
+                StartCoroutine(character.Move(input,OnMoveOver));
             }
         }
         character.HandleUpdate();
@@ -51,7 +61,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+    private void OnMoveOver()
+    {
+        CheckForEncounters();
+        CheckIfInBossView();
+    }
     private void CheckForEncounters()
     {
         if(Physics2D.OverlapCircle(transform.position, 0.2f, GameLayer.i.GrassLayer) != null)
@@ -63,6 +77,15 @@ public class PlayerController : MonoBehaviour
                 OnEncountered();
 
             }
+        }
+    }
+    private void CheckIfInBossView()
+    {
+        var collider = Physics2D.OverlapCircle(transform.position, 0.2f, GameLayer.i.FovLayer);
+        if (collider != null)
+        {
+            character.Animator.IsMoving = false;
+            OnEnterBossView?.Invoke(collider);
         }
     }
 }
