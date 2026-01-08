@@ -512,10 +512,6 @@ public class BattleSystem : MonoBehaviour
             ++currentMember;
         else if(Input.GetKeyDown(KeyCode.LeftArrow))
             --currentMember;
-        else if(Input.GetKeyDown(KeyCode.DownArrow))
-            currentMember +=2;
-        else if(Input.GetKeyDown(KeyCode.UpArrow))
-            currentMember -=2;
         currentMember =Mathf.Clamp(currentMember,0, playerParty.Monsters.Count -1);
         partyScreen.UpdateMemberSelection(currentMember);
         if(Input.GetKeyDown(KeyCode.Z))

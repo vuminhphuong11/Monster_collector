@@ -31,12 +31,12 @@ public class BattleUnit : MonoBehaviour
         if (isPlayerUnit)
         {
             //player unit setup
-            image.sprite = Monster.Base.BackSprite;
+            image.sprite = Monster.Base.RightPrite;
         }
         else
         {
             //enemy unit setup
-            image.sprite = Monster.Base.FrontSprite;
+            image.sprite = Monster.Base.LeftSprite;
         }
         hub.gameObject.SetActive(true);
         hub.SetData(Monster);

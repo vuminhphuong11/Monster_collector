@@ -28,11 +28,11 @@ public class MonsterBase : ScriptableObject
     {
         get { return description; }
     }
-    public Sprite FrontSprite
+    public Sprite LeftSprite
     {
         get { return leftSprite; }
     }
-    public Sprite BackSprite
+    public Sprite RightPrite
     {
         get { return rightSprite; }
     }
