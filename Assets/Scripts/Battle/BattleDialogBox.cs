@@ -92,7 +92,7 @@ public class BattleDialogBox : MonoBehaviour
             }
             else
             {
-                moveTexts[i].text = "-";
+                moveTexts[i].text = "- - -";
             }
         }
     }

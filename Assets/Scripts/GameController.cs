@@ -56,6 +56,11 @@ public class GameController : MonoBehaviour
 
     void EndBattle(bool won)
     {
+        if (boss != null && won == true)
+        {
+            boss.BattleLost();
+            boss = null;
+        }
         state = GameState.FreeRoam;
         battleSystem.gameObject.SetActive(false);
         worldCamera.gameObject.SetActive(true);
@@ -72,12 +77,13 @@ public class GameController : MonoBehaviour
         battleSystem.StartBattle(playerParty,wildMonster);
 
     }
+    BossController boss;
     public void StartBossBattle(BossController boss)
     {
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
-
+        this.boss= boss;
         var playerParty = playerController.GetComponent<MonsterParty>();
         var bossParty =boss.GetComponent<MonsterParty>();
         battleSystem.StartBossBattle(playerParty, bossParty);

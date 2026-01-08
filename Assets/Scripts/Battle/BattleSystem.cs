@@ -305,6 +305,7 @@ public class BattleSystem : MonoBehaviour
             sourceUnit.PlayFaintAnimation();
             yield return new WaitForSeconds(2f);
             CheckForBattleOver(sourceUnit);
+            yield return new WaitUntil(() => state == BattleState.RUNINGTURN);
         }
     }
     bool CheckIfMoveHits(Move move,Monster source,Monster target)

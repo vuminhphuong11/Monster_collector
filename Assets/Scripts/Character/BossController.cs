@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossController : MonoBehaviour
+public class BossController : MonoBehaviour, Interactable
 {
     [SerializeField] Dialog dialog;
+    [SerializeField] Dialog dialogAfterBattle;
     [SerializeField] GameObject exclamation;
     [SerializeField] GameObject fov;
     [SerializeField] Sprite sprite;
     [SerializeField] string name;
+    bool battleLost=false;
     Character character;
     private void Awake()
     {
@@ -17,6 +19,21 @@ public class BossController : MonoBehaviour
     private void Start()
     {
         SetFovRotation(character.Animator.DefaultDirection);
+    }
+    public void Interact(Transform initiator)
+    {
+        character.LookTorwads(initiator.position);
+        if (!battleLost)
+        {
+            StartCoroutine(DiaLogManager.Instance.ShowDiaLog(dialog, () =>
+            {
+                GameController.Instance.StartBossBattle(this);
+            }));
+        }
+        else
+        {
+            StartCoroutine(DiaLogManager.Instance.ShowDiaLog(dialogAfterBattle));
+        }
     }
     public IEnumerator TriggerBossBattle(PlayerController player)
     {
@@ -35,6 +52,11 @@ public class BossController : MonoBehaviour
         {
             GameController.Instance.StartBossBattle(this);
         }));
+    }
+    public void BattleLost()
+    {
+        battleLost = true;
+        fov.gameObject.SetActive(false);
     }
     public void SetFovRotation(FacingDirection dir)
     {
@@ -58,6 +80,7 @@ public class BossController : MonoBehaviour
         }
         fov.transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
+
     public string Name
     {
         get => name;
