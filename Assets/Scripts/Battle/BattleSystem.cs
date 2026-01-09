@@ -20,6 +20,7 @@ public class BattleSystem : MonoBehaviour
 
     bool playerSwitchedAfterFaint = false;
     bool enemySwitchedAfterFaint = false;
+    bool hasEngaged = false; // Biến đánh dấu đã giao tranh hay chưa
 
     public event Action<bool> OnBattleOver;
     BattleState state;
@@ -53,6 +54,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator SetupBattle()
     {
+        hasEngaged = false;
         playerUnit.Clear();
         enemyUnit.Clear();
         if (!isBossBattle)
@@ -135,6 +137,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.RUNINGTURN;
         if (playerAction == BattleAction.Move)
         {
+            hasEngaged = true;
             playerUnit.Monster.CurrentMove = playerUnit.Monster.Moves[currentMove];
             enemyUnit.Monster.CurrentMove = enemyUnit.Monster.GetRandomMove();
             // check who go first
@@ -183,6 +186,10 @@ public class BattleSystem : MonoBehaviour
             {
                 dialogBox.EnableActionSelector(false);
                 yield return OpenMonsterbook();
+            }
+            else if(playerAction == BattleAction.Run)
+            {
+                yield return StartCoroutine(TryToEscape());
             }
                 //enemy turn
                 var enemyMove = enemyUnit.Monster.GetRandomMove();
@@ -461,7 +468,7 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 3)
             {
                 //Run
-
+                StartCoroutine(RunTurns(BattleAction.Run));
             }
         }
     }
@@ -596,7 +603,7 @@ public class BattleSystem : MonoBehaviour
         yield return dialogBox.TypeDialog($"{player.Name} used MonsterBook to catch Monster!");
 
         // 1. Tạo cuốn sách tại vị trí người chơi
-        var monsterBookObj = Instantiate(monsterBookSprite, playerUnit.transform.position, Quaternion.identity);
+        var monsterBookObj = Instantiate(monsterBookSprite, playerUnit.transform.position-new Vector3(5f,0,0), Quaternion.identity);
         var monsterBook = monsterBookObj.GetComponent<SpriteRenderer>();
         // Định nghĩa vị trí ném tới
         Vector3 catchPosition = enemyUnit.transform.position + new Vector3(-5.5f, -0.5f, 0);
@@ -661,6 +668,21 @@ public class BattleSystem : MonoBehaviour
             shakeCount++;
         }
         return shakeCount;
+    }
+    IEnumerator TryToEscape()
+    {
+        state = BattleState.BUSY;
+
+        // Kiểm tra: Nếu đã ra đòn (Move) thì không được chạy nữa
+        if (hasEngaged)
+        {
+            yield return dialogBox.TypeDialog("You cannot run once the battle has started!");
+            state = BattleState.RUNINGTURN;
+            yield break;
+        }
+        // Nếu chưa đánh -> Cho phép chạy luôn (Kể cả Boss, theo ý của bạn)
+        yield return dialogBox.TypeDialog("Ran away safely!");
+        BattleOver(true);
     }
 }
 

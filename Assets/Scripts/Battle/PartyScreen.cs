@@ -13,7 +13,7 @@ public class PartyScreen : MonoBehaviour
 
     public void Init()
     {
-        memberSlots = GetComponentsInChildren<PartyMemberUI>();
+        memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
     }
 
     public void SetPartyData(List<Monster> monsters)
