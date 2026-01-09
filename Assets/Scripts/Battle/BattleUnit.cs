@@ -111,4 +111,37 @@ public class BattleUnit : MonoBehaviour
         sequence.Join(image.DOFade(0f, 0.4f));
         sequence.Join(image.transform.DOScale(0.8f, 0.4f));
     }
+    // Thêm tham số targetPosition (vị trí cuốn sách)
+    public IEnumerator PlayCaptureAnimation(Vector3 targetPosition)
+    {
+        var sequence = DOTween.Sequence();
+
+        // 1. Vừa mờ dần
+        sequence.Append(image.DOFade(0, 0.7f));
+        // 2. Vừa thu nhỏ
+        sequence.Join(transform.DOScale(new Vector3(0.1f, 0.1f, 1f), 0.7f));
+        // 3. QUAN TRỌNG: Vừa di chuyển về phía cuốn sách (tạo hiệu ứng bị hút)
+        sequence.Join(transform.DOMove(targetPosition, 0.7f));
+
+        yield return sequence.WaitForCompletion();
+    }
+    public IEnumerator PlayBreakOutAnimation(Vector3 bookPosition)
+    {
+        var sequence = DOTween.Sequence();
+        // Đặt vị trí bắt đầu ngay tại cuốn sách
+        transform.position = bookPosition;
+        // Đảm bảo trạng thái bắt đầu: Nhỏ và Trong suốt
+        transform.localScale = new Vector3(0.1f, 0.1f, 1f);
+        var color = image.color;
+        image.color = new Color(color.r, color.g, color.b, 0);
+        // 1. Hiện hình lại (Fade In)
+        sequence.Append(image.DOFade(1f, 0.5f));
+        // 2. Phóng to về kích thước gốc
+        sequence.Join(transform.DOScale(originalScale, 0.5f).SetEase(Ease.OutBack)); 
+        // 3. QUAN TRỌNG: Di chuyển về vị trí gốc dùng DOLocalMove
+        // Vì originalPosition là tọa độ Local
+        sequence.Join(transform.DOLocalMove(originalPosition, 0.5f));
+
+        yield return sequence.WaitForCompletion();
+    }
 }

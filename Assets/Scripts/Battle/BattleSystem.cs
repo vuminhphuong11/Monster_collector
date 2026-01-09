@@ -16,6 +16,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] Image playerImage;
     [SerializeField] Image bossImage;
     [SerializeField] Text vesusText;
+    [SerializeField] GameObject monsterBookSprite;
 
     bool playerSwitchedAfterFaint = false;
     bool enemySwitchedAfterFaint = false;
@@ -36,6 +37,7 @@ public class BattleSystem : MonoBehaviour
     {
         this.playerParty = playerParty;
         this.WildMonster = WildMonster;
+        player = playerParty.GetComponent<PlayerController>();
         StartCoroutine( SetupBattle());
     }
     public void StartBossBattle(MonsterParty playerParty, MonsterParty bossParty)
@@ -177,8 +179,13 @@ public class BattleSystem : MonoBehaviour
                 state = BattleState.BUSY;
                 yield return SwitchMonster(selectedMonster);
             }
-            //enemy turn
-            var enemyMove = enemyUnit.Monster.GetRandomMove();
+            else if (playerAction == BattleAction.UseItem)
+            {
+                dialogBox.EnableActionSelector(false);
+                yield return OpenMonsterbook();
+            }
+                //enemy turn
+                var enemyMove = enemyUnit.Monster.GetRandomMove();
             yield return RunMove(enemyUnit,playerUnit,enemyMove);
             yield return RunAfterTurn(enemyUnit);
             if (state == BattleState.BATTLEOVER) yield break;
@@ -408,6 +415,7 @@ public class BattleSystem : MonoBehaviour
             HandlePartySelection();
         }
 
+
     }
 
     void HandleActionSelection()
@@ -441,7 +449,7 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 1)
             {
                 //Bag
-              
+                StartCoroutine(RunTurns(BattleAction.UseItem));
             }
             else if (currentAction == 2)
             {
@@ -576,7 +584,84 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.RUNINGTURN;
         ActionSelection();
     }
+    IEnumerator OpenMonsterbook()
+    {
+        state = BattleState.BUSY;
+        if (isBossBattle)
+        {
+            yield return dialogBox.TypeDialog($"you can't steel the enemy's monster!");
+            state= BattleState.RUNINGTURN;
+            yield break;
+        }
+        yield return dialogBox.TypeDialog($"{player.Name} used MonsterBook to catch Monster!");
 
+        // 1. Tạo cuốn sách tại vị trí người chơi
+        var monsterBookObj = Instantiate(monsterBookSprite, playerUnit.transform.position, Quaternion.identity);
+        var monsterBook = monsterBookObj.GetComponent<SpriteRenderer>();
+        // Định nghĩa vị trí ném tới
+        Vector3 catchPosition = enemyUnit.transform.position + new Vector3(-5.5f, -0.5f, 0);
+        // 2. Animation: Sách bay từ người chơi ném xuống đất (gần chân quái)
+        yield return monsterBook.transform.DOJump(catchPosition, 2f, 1, 1f).WaitForCompletion();
+        // 3. Sách "bay lên nhẹ" TRƯỚC
+        yield return monsterBook.transform.DOMoveY(catchPosition.y + 2.5f, 0.5f).WaitForCompletion();
+        // 4. THAY ĐỔI: Hút quái vào sách SAU
+        yield return enemyUnit.PlayCaptureAnimation(monsterBook.transform.position);
+        int shakeCount = TryToCatchMonster(enemyUnit.Monster);
+        for (int i = 0; i < Mathf.Min(shakeCount,3); i++)
+        {
+            yield return new WaitForSeconds(0.5f);
+            yield return monsterBook.transform.DOPunchRotation(new Vector3(0, 0, 30f), 0.5f).WaitForCompletion();
+        }
+        if (shakeCount == 4)
+        {
+            //monster caught
+            yield return dialogBox.TypeDialog($"{enemyUnit.Monster.Base.Name} was caught!");
+            yield return monsterBook.transform.DOMoveY(catchPosition.y -1.5f, 0.5f).WaitForCompletion();
+            yield return monsterBook.DOFade(0, 1.5f).WaitForCompletion();
+            playerParty.AddMonster(enemyUnit.Monster);
+            yield return dialogBox.TypeDialog($"{enemyUnit.Monster.Base.Name} was add to you party!");
+            Destroy(monsterBook.gameObject);
+            BattleOver(true);
+        }
+        else
+        {
+            //caught fell
+            yield return new WaitForSeconds(1f);
+            monsterBook.DOFade(0, 0.3f);
+            yield return enemyUnit.PlayBreakOutAnimation(monsterBook.transform.position);
+            if (shakeCount < 2)
+            {
+                yield return dialogBox.TypeDialog($"{enemyUnit.Monster.Base.Name} broke free!");
+            }
+            else
+            {
+                yield return dialogBox.TypeDialog($"Almost Caught it!");
+            }
+            Destroy(monsterBook.gameObject);
+            state = BattleState.RUNINGTURN;
+        }
+
+
+    }
+    int TryToCatchMonster(Monster monster)
+    {
+        float a =(3*monster.MaxHP-2*monster.HP)*monster.Base.CatchRate/(3*monster.MaxHP);
+        if (a >= 225)
+        {
+            return 4;
+        }
+        float b=1048560/Mathf.Sqrt(Mathf.Sqrt(16711680/a));
+        int shakeCount = 0;
+        while (shakeCount < 4)
+        {
+            if(UnityEngine.Random.Range(0, 65535) >= b)
+            {
+                break;
+            }
+            shakeCount++;
+        }
+        return shakeCount;
+    }
 }
 
 

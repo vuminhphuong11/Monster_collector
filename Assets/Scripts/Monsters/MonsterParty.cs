@@ -22,5 +22,17 @@ public class MonsterParty : MonoBehaviour
     {
         return monsters.Where(x=>x.HP >0).FirstOrDefault();
     }
+    public void AddMonster(Monster newmonster)
+    {
+        if(monsters.Count<3)
+        {  
+            monsters.Add(newmonster); 
+        }
+        else
+        {
+            // them vao pc
+        }
+         
+    }
 }
 

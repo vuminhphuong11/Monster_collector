@@ -16682,6 +16682,7 @@ MonoBehaviour:
   playerImage: {fileID: 390101643}
   bossImage: {fileID: 337991636}
   vesusText: {fileID: 103701208}
+  monsterBookSprite: {fileID: 6028475435953679427, guid: f71ffb29add04a94ba4ecdd512206714, type: 3}
 --- !u!1 &1656525230
 GameObject:
   m_ObjectHideFlags: 0
@@ -68055,7 +68056,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -22011263
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1 &1831399940
