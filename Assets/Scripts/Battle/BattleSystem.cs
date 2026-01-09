@@ -596,7 +596,6 @@ public class BattleSystem : MonoBehaviour
         yield return dialogBox.TypeDialog($"{boss.Name} send out {nextMonster.Base.Name}");
 
         state = BattleState.RUNINGTURN;
-        ActionSelection();
     }
     IEnumerator OpenMonsterbook()
     {
