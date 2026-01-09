@@ -115,6 +115,13 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.ACTIONSELECTION;
         dialogBox.SetDialog("Choose an action:");
         dialogBox.EnableActionSelector(true);
+
+        // --- CẬP NHẬT TRẠNG THÁI NÚT RUN ---
+        // Truyền vào true nếu chưa đánh, false nếu đã đánh
+        dialogBox.SetRunEnabled(!hasEngaged);
+
+        // Cập nhật lại giao diện ngay lập tức để áp dụng màu
+        dialogBox.UpdateActionSelection(currentAction);
     }
 
     void OpenPartyScreen()

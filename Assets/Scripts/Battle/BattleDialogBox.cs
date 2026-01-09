@@ -16,6 +16,16 @@ public class BattleDialogBox : MonoBehaviour
     [SerializeField] List<TMP_Text> moveTexts;
     [SerializeField] TMP_Text ppText;
     [SerializeField] TMP_Text typeText;
+    [SerializeField] Color normalColor = Color.black; // Màu mặc định khi không chọn
+    [SerializeField] Color disabledColor = Color.gray;
+    // Biến lưu trạng thái nút Run có được dùng không
+    private bool isRunEnabled = true;
+
+    // Hàm này để BattleSystem gọi sang
+    public void SetRunEnabled(bool enabled)
+    {
+        isRunEnabled = enabled;
+    }
     public void SetDialog(string dialog)
     {
         dialogText.text = dialog;
@@ -47,15 +57,22 @@ public class BattleDialogBox : MonoBehaviour
     {
         for (int i = 0; i < actionTexts.Count; i++)
         {
+            // Logic cho nút Run (nằm ở vị trí số 3)
+            if (i == 3)
+            {
+                if (!isRunEnabled)
+                {
+                    // Nếu bị khóa -> Luôn luôn màu xám, kể cả khi đang chọn hay không
+                    actionTexts[i].color = disabledColor;
+                    continue; // Bỏ qua các lệnh bên dưới, sang vòng lặp tiếp theo
+                }
+            }
+
+            // Logic tô màu bình thường
             if (i == selectedAction)
-            {
                 actionTexts[i].color = highlightedColor;
-            }
             else
-            {
-                actionTexts[i].color = Color.black;
-            }
-            
+                actionTexts[i].color = normalColor;
         }
     }
     public void UpdateMoveSelection(int selectedMove, Move move)
