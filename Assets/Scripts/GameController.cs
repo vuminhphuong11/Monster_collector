@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour
         Instance = this;
         ConditionsDB.Init();
     }
+    public SceneDetail CurrentScene {  get; set; }
+    public  SceneDetail PreScene { get; set; }
 
     private void Start()
     {
@@ -67,7 +69,7 @@ public class GameController : MonoBehaviour
             {
                 // TRƯỜNG HỢP 2: Bỏ chạy hoặc Thua (nhưng chưa Game Over)
                 // Gọi hàm cooldown để Boss "nhắm mắt" trong 2 giây, cho phép người chơi chạy
-                StartCoroutine(boss.ResumeBattleAfterCooldown(2f));
+                StartCoroutine(boss.ResumeBattleAfterCooldown(10f));
             }
 
             // Reset biến boss hiện tại về null vì trận đấu đã kết thúc
@@ -126,5 +128,10 @@ public class GameController : MonoBehaviour
             // su ly logic khi ma dang giao tiep vs npc
             DiaLogManager.Instance.HandleUpdate();
         }
+    }
+    public void SetCurrentScene(SceneDetail currScene)
+    {
+        PreScene=CurrentScene;
+        CurrentScene = currScene;
     }
 }
