@@ -18,9 +18,26 @@ public class MonsterBase : ScriptableObject
     [SerializeField] int spAttack;
     [SerializeField] int spDefense;
     [SerializeField] int speed;
+    [SerializeField] int expYield=100;
+    [SerializeField] GrowthRate growthRate;
     [SerializeField] int catchRate=255;
     [SerializeField] List<LearnableMove> learnableMoves;
+    public static int MaxNumOfMoves { get; set; } = 9;
+    public int GetExpForLevel(int level)
+    {
+        if (growthRate == GrowthRate.Fast)
+        {
+            return 4 * (level * level*level)/5;
+        }
+        else if(growthRate == GrowthRate.Medium)
+        {
+            return (level * level*level);
+        }
+        return -1;
+    }
 
+    public int ExpYield { get { return expYield; } }
+    public GrowthRate GrowthRate { get { return growthRate; } }
     public string Name
     {
         get { return _name; }
@@ -133,6 +150,11 @@ public class TypeChart
         int col = (int)defenseType;
         return chart[row][col];
     }
+}
+public enum GrowthRate
+{
+    Fast,
+    Medium
 }
 public enum Stat
 {

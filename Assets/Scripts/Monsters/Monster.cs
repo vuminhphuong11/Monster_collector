@@ -25,6 +25,7 @@ public class Monster
             return level;
         } 
     }
+    public int EXP { get; set; }
     public int HP { get; set; }
     public List<Move> Moves { get; set; }
     public Move CurrentMove { get; set; }
@@ -54,30 +55,52 @@ public class Monster
             {
                 Moves.Add(new Move(move.Base));
             }
-            if(Moves.Count >= 4)
+            if(Moves.Count >= MonsterBase.MaxNumOfMoves)
             {
                 break;
             }
         }
-        CaculateStats();    
+        EXP =Base.GetExpForLevel(Level);
+
+        CalculateStats();    
         HP = MaxHP;
         StatusChanges = new Queue<string>();
         ResetStatBoosts();
         Status = null;
         VolatileStatus = null;
-
+        
 
     }
-    void CaculateStats()
+    public void CycleMove(Move moveUsed)
+    {
+        // Kiểm tra xem chiêu vừa dùng có trong danh sách không
+        if (Moves.Contains(moveUsed))
+        {
+            Moves.Remove(moveUsed); // Xóa khỏi vị trí hiện tại
+            Moves.Add(moveUsed);    // Thêm vào cuối danh sách
+        }
+    }
+    void CalculateStats()
     {
         Stats = new Dictionary<Stat, int>();
-        Stats.Add(Stat.Attack, Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5);
-        Stats.Add(Stat.Defense, Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5);
-        Stats.Add(Stat.SpAttack, Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5);
-        Stats.Add(Stat.SpDefense, Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5);
-        Stats.Add(Stat.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5);
 
-        MaxHP = Mathf.FloorToInt((Base.MaxHP * Level) / 100f) + 10 + Level;
+        // --- CẤU HÌNH SỨC MẠNH ---
+        // 1.035f nghĩa là tăng 3.5% mỗi cấp (Lãi kép).
+        // Level 13 ~ x1.5 lần Base
+        // Level 27 ~ x2.5 lần Base (Mạnh gấp rưỡi Level 13)
+        float atkgrowthRate = 1.1f;
+        float defgrowthRate = 1.05f;
+
+        Stats.Add(Stat.Attack, Mathf.FloorToInt(Base.Attack * Mathf.Pow(atkgrowthRate, Level)) + 5);
+        Stats.Add(Stat.Defense, Mathf.FloorToInt(Base.Defense * Mathf.Pow(defgrowthRate, Level)) + 5);
+        Stats.Add(Stat.SpAttack, Mathf.FloorToInt(Base.SpAttack * Mathf.Pow(atkgrowthRate, Level)) + 5);
+        Stats.Add(Stat.SpDefense, Mathf.FloorToInt(Base.SpDefense * Mathf.Pow(defgrowthRate, Level)) + 5);
+        Stats.Add(Stat.Speed, Mathf.FloorToInt(Base.Speed * Mathf.Pow(atkgrowthRate, Level)) + 5);
+
+        // --- CÔNG THỨC MÁU (HP) ---
+
+        float hpMultiplier = Mathf.Pow(1.03f, Level); // HP tăng 4% mỗi cấp
+        MaxHP = Mathf.FloorToInt((Base.MaxHP * hpMultiplier) + (Level * 2) + 10);
     }
 
     void ResetStatBoosts()
@@ -128,6 +151,26 @@ public class Monster
 
             Debug.Log($"{stat} has been boosted by {boost}. Current boost: {StatBoosts[stat]}");
         }
+    }
+
+    public bool CheckForLevelUp()
+    {
+        if(EXP>Base.GetExpForLevel(level + 1))
+        {
+            level++;
+            return true;
+
+        }
+        return false;
+    }
+    public LearnableMove GetLearnableMoveAtCurrLevel()
+    {
+        return Base.LearnableMoves.Where(x => x.Level == level).FirstOrDefault();
+    }
+    public void LearnMove(LearnableMove moveToLearn)
+    {
+        if (Moves.Count > MonsterBase.MaxNumOfMoves) return;
+        Moves.Add(new Move(moveToLearn.Base));
     }
     public int Attack
     {
@@ -231,14 +274,14 @@ public class Monster
         bool canPerformMove = true;
         if (Status?.OnBeforeMove != null)
         {
-            if (Status.OnBeforeMove(this))
+            if (!Status.OnBeforeMove(this))
             {
                 canPerformMove = false;
             }
         }
         if (VolatileStatus?.OnBeforeMove != null)
         {
-            if (VolatileStatus.OnBeforeMove(this))
+            if (!VolatileStatus.OnBeforeMove(this))
             {
                 canPerformMove = false;
             }

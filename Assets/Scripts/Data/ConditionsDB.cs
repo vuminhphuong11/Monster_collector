@@ -22,7 +22,7 @@ public class ConditionsDB
                 StartMessage="has been Poisoned",
                 OnAfterTurn = (Monster monster) =>
                 {
-                    monster.UpdateHp(monster.MaxHP/8);
+                    monster.UpdateHp(monster.MaxHP/12);
                     monster.StatusChanges.Enqueue($"{monster.Base.Name} hurt itself due to Poison");
                 }
             }

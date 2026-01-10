@@ -2,10 +2,11 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
-public enum BattleState { START, ACTIONSELECTION, MOVESELECTION,  RUNINGTURN, BUSY,PARTYSCREEN,BATTLEOVER}
+public enum BattleState { START, ACTIONSELECTION, MOVESELECTION,  RUNINGTURN, BUSY,PARTYSCREEN,ABOUTTOUSE,MOVETOFORGET,BATTLEOVER}
 public enum BattleAction { Move, SwitchMonster,UseItem,Run}
 public class BattleSystem : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] Image bossImage;
     [SerializeField] Text vesusText;
     [SerializeField] GameObject monsterBookSprite;
+    [SerializeField] MoveSelectionUI moveSelectionUI;
 
     bool playerSwitchedAfterFaint = false;
     bool enemySwitchedAfterFaint = false;
@@ -34,8 +36,10 @@ public class BattleSystem : MonoBehaviour
     bool isBossBattle=false;
     PlayerController player;
     BossController boss;
+    MoveBase moveToLearn;
     public  void StartBattle(MonsterParty playerParty , Monster WildMonster)
     {
+        isBossBattle = false;
         this.playerParty = playerParty;
         this.WildMonster = WildMonster;
         player = playerParty.GetComponent<PlayerController>();
@@ -138,7 +142,15 @@ public class BattleSystem : MonoBehaviour
         dialogBox.EnableDialogText(false);
         dialogBox.EnableMoveSelector(true);
     }
-
+    IEnumerator ChooseMoveToForget(Monster monster,MoveBase newMov)
+    {
+        state = BattleState.BUSY;
+        yield return dialogBox.TypeDialog($"Choose a Move you wana forget!");
+        moveSelectionUI.gameObject.SetActive(true);
+        moveSelectionUI.SetMoveData(monster.Moves.Select(x=>x.Base).ToList(),newMov);
+        moveToLearn = newMov;
+        state= BattleState.MOVETOFORGET;
+    }
     IEnumerator RunTurns(BattleAction playerAction)
     {
         state = BattleState.RUNINGTURN;
@@ -256,18 +268,23 @@ public class BattleSystem : MonoBehaviour
             // ... (phần code xử lý ngất giữ nguyên) ...
             if (targetUnit.Monster.HP <= 0)
             {
-                yield return dialogBox.TypeDialog(targetUnit.Monster.Base.Name + " fainted!");
-                targetUnit.PlayFaintAnimation();
-                yield return new WaitForSeconds(2f);
-                CheckForBattleOver(targetUnit);
-                if (state == BattleState.BATTLEOVER) yield break;
+                yield return  HandleMonsterFainted(targetUnit);
+
             }
         }
         else
         {
             yield return dialogBox.TypeDialog(sourceUnit.Monster.Base.Name + "'s Attack missed!");
         }
-        
+        sourceUnit.Monster.CycleMove(move);
+
+        // Nếu là người chơi thì cập nhật lại danh sách hiển thị ngay lập tức
+        if (sourceUnit.IsPlayerUnit)
+        {
+            dialogBox.SetMoveNames(sourceUnit.Monster.Moves);
+
+        }
+
     }
     // --- SỬA THAM SỐ ĐẦU VÀO: Monster -> BattleUnit ---
     // Trong file BattleSystem.cs
@@ -322,10 +339,7 @@ public class BattleSystem : MonoBehaviour
         yield return sourceUnit.Hub.UpdateHP();
         if (sourceUnit.Monster.HP <= 0)
         {
-            yield return dialogBox.TypeDialog(sourceUnit.Monster.Base.Name + " fainted!");
-            sourceUnit.PlayFaintAnimation();
-            yield return new WaitForSeconds(2f);
-            CheckForBattleOver(sourceUnit);
+            yield return HandleMonsterFainted(sourceUnit);
             yield return new WaitUntil(() => state == BattleState.RUNINGTURN);
         }
     }
@@ -366,6 +380,52 @@ public class BattleSystem : MonoBehaviour
             var message = monster.StatusChanges.Dequeue();
             yield return dialogBox.TypeDialog(message);
         }
+    }
+    IEnumerator HandleMonsterFainted(BattleUnit faintedUnit)
+    {
+        yield return dialogBox.TypeDialog(faintedUnit.Monster.Base.Name + " fainted!");
+        faintedUnit.PlayFaintAnimation();
+        yield return new WaitForSeconds(2f);
+        if (!faintedUnit.IsPlayerUnit)
+        {
+            //gain exp
+            int expYield = faintedUnit.Monster.Base.ExpYield;
+            int enemyLevel = faintedUnit.Monster.Level;
+            float bossBonus = (isBossBattle) ? 1.5f : 1;
+            int expGain= Mathf.FloorToInt((expYield*enemyLevel * bossBonus)/7);
+            playerUnit.Monster.EXP += expGain;
+            yield return dialogBox.TypeDialog($"{playerUnit.Monster.Base.Name} gained {expGain} exp");
+            yield return playerUnit.Hub.SetExpSmooth();
+            // check lvup
+            while (playerUnit.Monster.CheckForLevelUp())
+            {
+                playerUnit.Hub.SetLevel();
+                yield return dialogBox.TypeDialog($"{playerUnit.Monster.Base.Name} level up! Current level {playerUnit.Monster.Level}");
+                // try to learn new move
+                var newMov= playerUnit.Monster.GetLearnableMoveAtCurrLevel();
+                if (newMov!=null)
+                {
+                    if (playerUnit.Monster.Moves.Count < MonsterBase.MaxNumOfMoves)
+                    {
+                        playerUnit.Monster.LearnMove(newMov);
+                        yield return dialogBox.TypeDialog($"{playerUnit.Monster.Base.Name} learned {newMov.Base.Name} !");
+                        dialogBox.SetMoveNames(playerUnit.Monster.Moves);
+                    }
+                    else// quen move khi ma vuot qua index, so move toi da la 9
+                    {
+                        yield return dialogBox.TypeDialog($"{playerUnit.Monster.Base.Name} trying to learn {newMov.Base.Name} !");
+                        yield return dialogBox.TypeDialog($"But it can not learn more than 9 moves !");
+                        yield return ChooseMoveToForget(playerUnit.Monster, newMov.Base);
+                        yield return new WaitUntil(() => state != BattleState.MOVETOFORGET);
+                        yield return new WaitForSeconds(1f);
+                    }
+                }
+                yield return playerUnit.Hub.SetExpSmooth(true);
+            }
+            yield return new WaitForSeconds (1f);
+
+        }
+        CheckForBattleOver(faintedUnit);
     }
     void CheckForBattleOver(BattleUnit faintedUnit)
     {
@@ -428,9 +488,31 @@ public class BattleSystem : MonoBehaviour
             // Handle party screen input (not implemented in this snippet)
             HandlePartySelection();
         }
-
+        else if(state == BattleState.MOVETOFORGET)
+        {
+            Action<int> onMoveSelected = (moveIndex) =>
+            {
+                moveSelectionUI.gameObject.SetActive(false);
+                if(moveIndex == MonsterBase.MaxNumOfMoves)
+                {
+                    // dont learn move
+                    StartCoroutine(dialogBox.TypeDialog($"{playerUnit.Monster.Base.Name} did not learn {moveToLearn.Name}"));
+                }
+                else
+                {
+                    // forget selected move and learn new move
+                    var selectedMove = playerUnit.Monster.Moves[moveIndex].Base;
+                    StartCoroutine(dialogBox.TypeDialog($"{playerUnit.Monster.Base.Name} forgot {selectedMove.Name} and learned {moveToLearn.Name}"));
+                    playerUnit.Monster.Moves[moveIndex] = new Move(moveToLearn);
+                }
+                moveToLearn = null;
+                state = BattleState.RUNINGTURN;
+            };
+            moveSelectionUI.HandleMoveSelection(onMoveSelected);
+        }
 
     }
+
 
     void HandleActionSelection()
     {
@@ -482,42 +564,45 @@ public class BattleSystem : MonoBehaviour
 
     void HandleMoveSelection()
     {
-        int moveCount = playerUnit.Monster.Moves.Count;
-        // Di chuyển XUỐNG (Cộng 2)
+        // Chỉ lấy tối đa 4 chiêu để hiển thị logic di chuyển chuột
+        int visibleMoveCount = Mathf.Min(playerUnit.Monster.Moves.Count, 4);
+
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (currentMove + 2 < moveCount)
+            if (currentMove + 2 < visibleMoveCount)
                 currentMove += 2;
         }
-        // Di chuyển LÊN (Trừ 2)
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             if (currentMove >= 2)
                 currentMove -= 2;
-        }       // Di chuyển SANG PHẢI (Cộng 1)
+        }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (currentMove % 2 == 0 && currentMove + 1 < moveCount)
+            if (currentMove % 2 == 0 && currentMove + 1 < visibleMoveCount)
                 currentMove++;
-        }// Di chuyển SANG TRÁI (Trừ 1)
+        }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             if (currentMove % 2 != 0)
                 currentMove--;
-        }//
-        // neu co loi thi xoa dong duoi day
-        currentMove = Mathf.Clamp(currentMove, 0, playerUnit.Monster.Moves.Count - 1);
-        dialogBox.UpdateMoveSelection(currentMove, playerUnit.Monster.Moves[currentMove]);
-        if(Input.GetKeyDown(KeyCode.Z))
+        }
+
+        // Kẹp currentMove luôn nằm trong khoảng 0 đến 3 (hoặc ít hơn nếu chưa đủ chiêu)
+        currentMove = Mathf.Clamp(currentMove, 0, visibleMoveCount - 1);
+
+        // Lấy chiêu thực tế từ danh sách (Danh sách này có thể có 10 chiêu, nhưng currentMove chỉ từ 0-3)
+        var selectedMove = playerUnit.Monster.Moves[currentMove];
+
+        dialogBox.UpdateMoveSelection(currentMove, selectedMove);
+
+        if (Input.GetKeyDown(KeyCode.Z))
         {
-            var move = playerUnit.Monster.Moves[currentMove];
-            if (move.PP==0)
-            {
-                return;
-            }
+            if (selectedMove.PP == 0) return;
+
             dialogBox.EnableMoveSelector(false);
             dialogBox.EnableDialogText(true);
-            StartCoroutine( RunTurns(BattleAction.Move));
+            StartCoroutine(RunTurns(BattleAction.Move));
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
