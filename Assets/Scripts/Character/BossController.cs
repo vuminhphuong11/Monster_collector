@@ -53,6 +53,21 @@ public class BossController : MonoBehaviour, Interactable
             GameController.Instance.StartBossBattle(this);
         }));
     }
+    public IEnumerator ResumeBattleAfterCooldown(float cooldownTime = 5f)
+    {
+        // 1. Tắt vùng phát hiện người chơi (FOV) để không bị bắt trận lại ngay
+        if (fov != null)
+        {
+            fov.SetActive(false);
+        }
+        // 2. Chờ một khoảng thời gian (ví dụ 2 giây) để người chơi chạy
+        yield return new WaitForSeconds(cooldownTime);
+        // 3. Bật lại FOV (nếu Boss chưa bị đánh bại)
+        if (!battleLost && fov != null)
+        {
+            fov.SetActive(true);
+        }
+    }
     public void BattleLost()
     {
         battleLost = true;

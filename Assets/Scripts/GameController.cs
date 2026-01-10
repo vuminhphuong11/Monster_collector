@@ -56,9 +56,21 @@ public class GameController : MonoBehaviour
 
     void EndBattle(bool won)
     {
-        if (boss != null && won == true)
+        if (boss != null)
         {
-            boss.BattleLost();
+            if (won)
+            {
+                // TRƯỜNG HỢP 1: Thắng Boss
+                boss.BattleLost(); // Boss nhận thua và biến mất/ngừng tương tác
+            }
+            else
+            {
+                // TRƯỜNG HỢP 2: Bỏ chạy hoặc Thua (nhưng chưa Game Over)
+                // Gọi hàm cooldown để Boss "nhắm mắt" trong 2 giây, cho phép người chơi chạy
+                StartCoroutine(boss.ResumeBattleAfterCooldown(2f));
+            }
+
+            // Reset biến boss hiện tại về null vì trận đấu đã kết thúc
             boss = null;
         }
         state = GameState.FreeRoam;

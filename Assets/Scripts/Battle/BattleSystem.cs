@@ -773,7 +773,7 @@ public class BattleSystem : MonoBehaviour
         }
         // Nếu chưa đánh -> Cho phép chạy luôn (Kể cả Boss, theo ý của bạn)
         yield return dialogBox.TypeDialog("Ran away safely!");
-        BattleOver(true);
+        BattleOver(false);
     }
 }
 
