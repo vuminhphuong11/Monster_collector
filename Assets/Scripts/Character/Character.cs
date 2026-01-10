@@ -13,6 +13,22 @@ public class Character : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<CharacterAnimator>();
+        SetPositionAndSnapToTile(transform.position);
+    }
+    public void SetPositionAndSnapToTile(Vector2 pos)
+    {
+        pos.x=Mathf.Floor(pos.x)+0.5f;
+        pos.y = Mathf.Floor(pos.y) + 0.5f;
+        transform.position = pos;
+    }
+
+    public void StopMoving()
+    {
+        // Dừng tất cả Coroutine đang chạy (bao gồm cả hàm Move)
+        StopAllCoroutines();
+        // Reset trạng thái về đứng yên
+        IsMoving = false;
+        animator.IsMoving = false;
     }
     public IEnumerator Move(Vector2 moveVec, Action OnMoveOver = null)
     {

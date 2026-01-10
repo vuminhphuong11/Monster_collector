@@ -28,18 +28,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        playerController.OnEncountered += StartBattle;
         battleSystem.OnBattleOver += EndBattle;
-        playerController.OnEnterBossView += (Collider2D bossCollider) =>
-        {
-            var boss = bossCollider.GetComponentInParent<BossController>();
-            if (boss != null)
-            {
-                state=GameState.Cutscene;
-                StartCoroutine(boss.TriggerBossBattle(playerController));
-            }
-        };
-
         DiaLogManager.Instance.OnShowDialog += () =>
         {
             state = GameState.Dialog;
@@ -52,6 +41,17 @@ public class GameController : MonoBehaviour
             }
                 
         };
+    }
+    public void PauseGame(bool pause)
+    {
+        if (pause)
+        {
+            state = GameState.Cutscene; // Chuyển sang Cutscene để chặn HandleUpdate của Player
+        }
+        else
+        {
+            state = GameState.FreeRoam;
+        }
     }
 
     void EndBattle(bool won)
@@ -66,7 +66,7 @@ public class GameController : MonoBehaviour
         worldCamera.gameObject.SetActive(true);
     }
 
-    void StartBattle()
+    public void StartBattle()
     {
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
@@ -90,6 +90,11 @@ public class GameController : MonoBehaviour
         var bossParty =boss.GetComponent<MonsterParty>();
         battleSystem.StartBossBattle(playerParty, bossParty);
 
+    }
+    public void OnEnterBossesView(BossController boss)
+    {
+        state = GameState.Cutscene;
+        StartCoroutine(boss.TriggerBossBattle(playerController));
     }
 
     public void Update()

@@ -9,8 +9,6 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] Sprite sprite;
     [SerializeField] string name;
-    public event Action OnEncountered;
-    public event Action<Collider2D> OnEnterBossView;
     public string Name
     {
         get => name;
@@ -19,8 +17,7 @@ public class PlayerController : MonoBehaviour
     {
         get => sprite;
     }
-
-
+    public Character Character =>character;
 
     private Vector2 input;
 
@@ -63,29 +60,18 @@ public class PlayerController : MonoBehaviour
 
     private void OnMoveOver()
     {
-        CheckForEncounters();
-        CheckIfInBossView();
-    }
-    private void CheckForEncounters()
-    {
-        if(Physics2D.OverlapCircle(transform.position, 0.2f, GameLayer.i.GrassLayer) != null)
+        var colliders= Physics2D.OverlapCircleAll(transform.position, 0.2f, GameLayer.i.TriggerableLayer);
+        foreach(var collider in colliders)
         {
-            if(UnityEngine.Random.Range(1,101) <= 10) // 10% chance
+            var triggerable = collider.GetComponent<IPlayerTriggerable>();
+            if(triggerable != null)
             {
-                Debug.Log("A wild Pokémon appeared!");
                 character.Animator.IsMoving = false;
-                OnEncountered();
-
+                triggerable.OnPlayerTriggered(this);
+                break;
             }
         }
+
     }
-    private void CheckIfInBossView()
-    {
-        var collider = Physics2D.OverlapCircle(transform.position, 0.2f, GameLayer.i.FovLayer);
-        if (collider != null)
-        {
-            character.Animator.IsMoving = false;
-            OnEnterBossView?.Invoke(collider);
-        }
-    }
+
 }
