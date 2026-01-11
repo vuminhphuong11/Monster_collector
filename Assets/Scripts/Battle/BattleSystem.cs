@@ -130,6 +130,7 @@ public class BattleSystem : MonoBehaviour
 
     void OpenPartyScreen()
     {
+        preState=state;
         state = BattleState.PARTYSCREEN;
         partyScreen.SetPartyData(playerParty.Monsters);
         partyScreen.gameObject.SetActive(true);
@@ -550,7 +551,6 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 2)
             {
                 //Monster
-                preState = state;
                 OpenPartyScreen();
                
             }
@@ -637,7 +637,7 @@ public class BattleSystem : MonoBehaviour
             partyScreen.gameObject.SetActive(false);
             if (preState == BattleState.ACTIONSELECTION)
             {
-                preState = null;
+                //preState = null;
                 StartCoroutine(RunTurns(BattleAction.SwitchMonster));
             }
             else
@@ -646,7 +646,7 @@ public class BattleSystem : MonoBehaviour
                 playerSwitchedAfterFaint = true;
                 StartCoroutine(SwitchMonster(selectedMember));
             }
-
+            preState = null;
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
@@ -657,6 +657,7 @@ public class BattleSystem : MonoBehaviour
                 dialogBox.EnableDialogText(true);
                 ActionSelection();
             }
+            preState = null;
         }
     }
     IEnumerator SwitchMonster(Monster newMonster)
