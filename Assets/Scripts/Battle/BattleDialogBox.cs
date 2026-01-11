@@ -7,7 +7,6 @@ using TMPro;
 public class BattleDialogBox : MonoBehaviour
 {
     [SerializeField] int lettersPerSecond ;
-    [SerializeField] Color highlightedColor;
     [SerializeField] TMP_Text dialogText;
     [SerializeField] GameObject actionSelector;
     [SerializeField] GameObject moveSelector;
@@ -20,6 +19,11 @@ public class BattleDialogBox : MonoBehaviour
     [SerializeField] Color disabledColor = Color.gray;
     // Biến lưu trạng thái nút Run có được dùng không
     private bool isRunEnabled = true;
+    Color highlightedColor;
+    private void Start()
+    {
+        highlightedColor = GlobalSetting.i.HighlightedColor;
+    }
 
     // Hàm này để BattleSystem gọi sang
     public void SetRunEnabled(bool enabled)

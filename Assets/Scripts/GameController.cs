@@ -8,7 +8,8 @@ public enum GameState
     FreeRoam,
     Battle,
     Dialog,
-    Cutscene
+    Cutscene,
+    Menu
     
 }
 public class GameController : MonoBehaviour
@@ -20,9 +21,11 @@ public class GameController : MonoBehaviour
     [SerializeField] Camera worldCamera;
     GameState state;
     public static GameController Instance {  get; private set; }
+    MenuController menuController;
     private void Awake()
     {
         Instance = this;
+        menuController = GetComponent<MenuController>();
         MonsterDB.Init();
         MoveDB.Init();
         ConditionsDB.Init();
@@ -45,6 +48,11 @@ public class GameController : MonoBehaviour
             }
                 
         };
+        menuController.OnBack += () =>
+        {
+            state = GameState.FreeRoam;
+        };
+        menuController.onMenuSelected += OnMenuSelected;
     }
     public void PauseGame(bool pause)
     {
@@ -118,14 +126,10 @@ public class GameController : MonoBehaviour
         {
             // Xử lý logic khi ở trạng thái FreeRoam
             playerController.HandleUpdate();
-            // luu va load
-            if (Input.GetKeyDown(KeyCode.S))
+            if(Input.GetKeyDown(KeyCode.Return))
             {
-                SavingSystem.i.Save("saveSlot1");
-            }
-            else if (Input.GetKeyDown(KeyCode.L))
-            {
-                SavingSystem.i.Load("saveSlot1");
+                menuController.OpenMenu();
+                state=GameState.Menu;
             }
         }
         else if (state == GameState.Battle)
@@ -138,11 +142,37 @@ public class GameController : MonoBehaviour
             // su ly logic khi ma dang giao tiep vs npc
             DiaLogManager.Instance.HandleUpdate();
         }
-
+        else if(state== GameState.Menu)
+        {
+            menuController.HandleUpdate();
+        }
     }
     public void SetCurrentScene(SceneDetail currScene)
     {
         PreScene=CurrentScene;
         CurrentScene = currScene;
+    }
+    void OnMenuSelected(int selectedItem)
+    {
+        if (selectedItem == 0)
+        {
+            //monster
+        }
+        else if(selectedItem == 1)
+        {
+            //bag
+        }
+        else if(selectedItem == 2)
+        {
+            //Save
+            SavingSystem.i.Save("saveSlot1");
+        }
+        else if(selectedItem == 3)
+        {
+            //Load
+            SavingSystem.i.Load("saveSlot1");
+        }
+        state= GameState.FreeRoam;
+
     }
 }
