@@ -40505,7 +40505,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1963239897}
   - component: {fileID: 1963239896}
-  - component: {fileID: 1963239895}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -40513,61 +40512,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1963239895
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1963239894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 838c2fc6f7221e24095c5b5243c56ba1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wildMonsters:
-  - _base: {fileID: 11400000, guid: b96449ac6fa60c74185c9a12c1806f6a, type: 2}
-    level: 12
-  - _base: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
-    level: 10
-  - _base: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
-    level: 7
-  - _base: {fileID: 11400000, guid: 7be9bf5a43a440240831b1c0887712dd, type: 2}
-    level: 12
-  - _base: {fileID: 11400000, guid: 7be9bf5a43a440240831b1c0887712dd, type: 2}
-    level: 8
-  - _base: {fileID: 11400000, guid: 7be9bf5a43a440240831b1c0887712dd, type: 2}
-    level: 6
-  - _base: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
-    level: 12
-  - _base: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
-    level: 8
-  - _base: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
-    level: 6
-  - _base: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
-    level: 14
-  - _base: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
-    level: 9
-  - _base: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
-    level: 6
-  - _base: {fileID: 11400000, guid: da098425c13961d4d9b71177199f8b6d, type: 2}
-    level: 14
-  - _base: {fileID: 11400000, guid: da098425c13961d4d9b71177199f8b6d, type: 2}
-    level: 11
-  - _base: {fileID: 11400000, guid: da098425c13961d4d9b71177199f8b6d, type: 2}
-    level: 8
-  - _base: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
-    level: 12
-  - _base: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
-    level: 7
-  - _base: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
-    level: 7
-  - _base: {fileID: 11400000, guid: b96449ac6fa60c74185c9a12c1806f6a, type: 2}
-    level: 13
-  - _base: {fileID: 11400000, guid: b96449ac6fa60c74185c9a12c1806f6a, type: 2}
-    level: 11
-  - _base: {fileID: 11400000, guid: b96449ac6fa60c74185c9a12c1806f6a, type: 2}
-    level: 9
 --- !u!156049354 &1963239896
 Grid:
   m_ObjectHideFlags: 0

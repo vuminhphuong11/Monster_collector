@@ -40380,48 +40380,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wildMonsters:
-  - _base: {fileID: 11400000, guid: b96449ac6fa60c74185c9a12c1806f6a, type: 2}
-    level: 12
-  - _base: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
-    level: 10
-  - _base: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
-    level: 7
   - _base: {fileID: 11400000, guid: 7be9bf5a43a440240831b1c0887712dd, type: 2}
     level: 12
-  - _base: {fileID: 11400000, guid: 7be9bf5a43a440240831b1c0887712dd, type: 2}
-    level: 8
-  - _base: {fileID: 11400000, guid: 7be9bf5a43a440240831b1c0887712dd, type: 2}
-    level: 6
-  - _base: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
-    level: 12
-  - _base: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
-    level: 8
-  - _base: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
-    level: 6
-  - _base: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
-    level: 14
-  - _base: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
-    level: 9
-  - _base: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
-    level: 6
-  - _base: {fileID: 11400000, guid: da098425c13961d4d9b71177199f8b6d, type: 2}
-    level: 14
-  - _base: {fileID: 11400000, guid: da098425c13961d4d9b71177199f8b6d, type: 2}
-    level: 11
-  - _base: {fileID: 11400000, guid: da098425c13961d4d9b71177199f8b6d, type: 2}
-    level: 8
-  - _base: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
-    level: 12
-  - _base: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
-    level: 7
-  - _base: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
-    level: 7
-  - _base: {fileID: 11400000, guid: b96449ac6fa60c74185c9a12c1806f6a, type: 2}
-    level: 13
-  - _base: {fileID: 11400000, guid: b96449ac6fa60c74185c9a12c1806f6a, type: 2}
-    level: 11
-  - _base: {fileID: 11400000, guid: b96449ac6fa60c74185c9a12c1806f6a, type: 2}
-    level: 9
 --- !u!156049354 &1954930672
 Grid:
   m_ObjectHideFlags: 0

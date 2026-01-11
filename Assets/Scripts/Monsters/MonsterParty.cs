@@ -10,6 +10,7 @@ public class MonsterParty : MonoBehaviour
     public List<Monster> Monsters
     {
         get { return monsters; }
+        set { monsters = value; }
     }
     private void Start()
     {

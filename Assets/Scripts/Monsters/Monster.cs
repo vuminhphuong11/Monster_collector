@@ -61,7 +61,6 @@ public class Monster
             }
         }
         EXP =Base.GetExpForLevel(Level);
-
         CalculateStats();    
         HP = MaxHP;
         StatusChanges = new Queue<string>();
@@ -79,6 +78,31 @@ public class Monster
             Moves.Remove(moveUsed); // Xóa khỏi vị trí hiện tại
             Moves.Add(moveUsed);    // Thêm vào cuối danh sách
         }
+    }
+    public Monster(MonsterSaveData saveData)
+    {
+        HP = saveData.hp;
+        level = saveData.lv;
+        EXP = saveData.exp;
+        _base=MonsterDB.GetMonsterByName(saveData.name);
+        Moves =saveData.moves.Select(s=>new Move(s)).ToList();
+        CalculateStats();
+        StatusChanges = new Queue<string>();
+        ResetStatBoosts();
+        Status = null;
+        VolatileStatus = null;
+    }
+    public MonsterSaveData GetSaveData()
+    {
+        var saveData = new MonsterSaveData()
+        {
+            name=Base.Name,
+            hp=HP,
+            exp=EXP,
+            lv=Level,
+            moves=Moves.Select(m=>m.GetSaveData()).ToList(),
+        };
+        return saveData;
     }
     void CalculateStats()
     {
@@ -311,4 +335,12 @@ public class DamageDetails
     public float Critical { get; set; }
     public float TypeEffectiveness { get; set; }
 }
-
+[Serializable]
+public class MonsterSaveData
+{
+    public string name;
+    public int hp;
+    public int lv;
+    public int exp;
+    public List<MoveSaveData> moves;
+}

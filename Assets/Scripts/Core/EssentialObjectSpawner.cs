@@ -14,7 +14,13 @@ public class EssentialObjectSpawner : MonoBehaviour
         if (existingObjects.Length == 0)
         {
             // Nếu chưa có thì mới tạo mới
-            Instantiate(essentialObjectsPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            var spawnPos = new Vector3(0, 0, 0);
+            var grid =FindObjectOfType<Grid>();
+            if (grid != null)
+            {
+                spawnPos=grid.transform.position;
+            }
+            Instantiate(essentialObjectsPrefab, spawnPos, Quaternion.identity);
         }
     }
 }

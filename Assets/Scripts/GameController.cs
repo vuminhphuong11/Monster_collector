@@ -23,6 +23,8 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        MonsterDB.Init();
+        MoveDB.Init();
         ConditionsDB.Init();
     }
     public SceneDetail CurrentScene {  get; set; }
@@ -85,9 +87,8 @@ public class GameController : MonoBehaviour
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
-
         var playerParty = playerController.GetComponent<MonsterParty>();
-        var wildMonster = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildMonster();
+        var wildMonster = CurrentScene.GetComponent<MapArea>().GetRandomWildMonster();
         var wildMonstercopy = new Monster(wildMonster.Base, wildMonster.Level);
 
         battleSystem.StartBattle(playerParty,wildMonstercopy);
@@ -117,6 +118,15 @@ public class GameController : MonoBehaviour
         {
             // Xử lý logic khi ở trạng thái FreeRoam
             playerController.HandleUpdate();
+            // luu va load
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                SavingSystem.i.Save("saveSlot1");
+            }
+            else if (Input.GetKeyDown(KeyCode.L))
+            {
+                SavingSystem.i.Load("saveSlot1");
+            }
         }
         else if (state == GameState.Battle)
         {
@@ -128,6 +138,7 @@ public class GameController : MonoBehaviour
             // su ly logic khi ma dang giao tiep vs npc
             DiaLogManager.Instance.HandleUpdate();
         }
+
     }
     public void SetCurrentScene(SceneDetail currScene)
     {

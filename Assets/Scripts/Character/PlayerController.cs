@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class PlayerController : MonoBehaviour
+
+public class PlayerController : MonoBehaviour,ISavable
 {
-
-
     [SerializeField] Sprite sprite;
     [SerializeField] string name;
     public string Name
@@ -66,7 +67,7 @@ public class PlayerController : MonoBehaviour
             var triggerable = collider.GetComponent<IPlayerTriggerable>();
             if(triggerable != null)
             {
-                character.Animator.IsMoving = false;
+                
                 triggerable.OnPlayerTriggered(this);
                 break;
             }
@@ -74,4 +75,28 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public object CaptureState()
+    {
+        var saveData = new PlayerSaveData()
+        {
+            position = new float[] { transform.position.x, transform.position.y },
+            monsters = GetComponent<MonsterParty>().Monsters.Select(p=>p.GetSaveData()).ToList()
+        };
+        float[] position= new float[] {transform.position.x,transform.position.y};
+        return saveData;
+    }
+
+    public void RestoreState(object state)
+    {
+        var saveData= (PlayerSaveData)state;
+        var pos=saveData.position;
+        transform.position = new Vector3(pos[0], pos[1]);
+        GetComponent<MonsterParty>().Monsters= saveData.monsters.Select(s=>new Monster(s)).ToList();
+    }
+}
+[Serializable]
+public class PlayerSaveData
+{
+    public float[] position;
+    public List<MonsterSaveData> monsters;
 }

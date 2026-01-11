@@ -11,8 +11,8 @@ public class LongGrass : MonoBehaviour, IPlayerTriggerable
         if (UnityEngine.Random.Range(1, 101) <= 10) // 10% chance
             {
                 Debug.Log("A wild Pokémon appeared!");
-
-                GameController.Instance.StartBattle();
+            player.Character.Animator.IsMoving = false;
+            GameController.Instance.StartBattle();
             }
         
     }

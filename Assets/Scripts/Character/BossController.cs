@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossController : MonoBehaviour, Interactable
+public class BossController : MonoBehaviour, Interactable,ISavable
 {
     [SerializeField] Dialog dialog;
     [SerializeField] Dialog dialogAfterBattle;
@@ -93,6 +93,20 @@ public class BossController : MonoBehaviour, Interactable
             angle = 180f;
         }
         fov.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+    }
+
+    public object CaptureState()
+    {
+        return battleLost;
+    }
+
+    public void RestoreState(object state)
+    {
+        battleLost = (bool)state;
+        if (battleLost)
+        {
+            fov.gameObject.SetActive(false);
+        }
     }
 
     public string Name
