@@ -175,7 +175,6 @@ public class StorageUI : MonoBehaviour
             {
                 // --- SỬA DÒNG NÀY: Gọi hàm tính tổng ---
                 float totalTime = selectedMonster.GetTotalHealTimeLeft();
-
                 // Hiển thị tổng thời gian
                 // Ví dụ: "Full in: 45s"
                 regenInfoText.text = $"Full in: {FormatTime(totalTime)}";
@@ -215,17 +214,26 @@ public class StorageUI : MonoBehaviour
     }
     void UpdateSelectionVisual()
     {
-        // 1. Reset trạng thái Selected (Highlight khung)
-        foreach (var s in partySlots) s.SetSelected(false);
-        foreach (var s in pcSlots) s.SetSelected(false);
-        // 2. Highlight con trỏ hiện tại
+        // 1. RESET TOÀN BỘ VỀ TRẠNG THÁI MẶC ĐỊNH TRƯỚC (Đen, không chọn)
+        foreach (var s in partySlots)
+        {
+            s.SetSelected(false);
+            s.SetNameColor(Color.black);
+        }
+        foreach (var s in pcSlots)
+        {
+            s.SetSelected(false);
+            s.SetNameColor(Color.black);
+        }
+
+        // 2. HIGHLIGHT CON TRỎ HIỆN TẠI (Tô màu highlight cho cả Tên và Level)
         if (state == StorageState.PartyFocus)
         {
             if (currentPartyIndex < partySlots.Count)
             {
                 partySlots[currentPartyIndex].gameObject.SetActive(true);
-                partySlots[currentPartyIndex].SetSelected(true);
-                messageText.text = "Party Area";
+                partySlots[currentPartyIndex].SetSelected(true); // Tên & Level thành màu Highlight
+                messageText.text = "Your Team!";
             }
         }
         else
@@ -233,25 +241,25 @@ public class StorageUI : MonoBehaviour
             if (currentBoxSlotIndex < pcSlots.Count)
             {
                 pcSlots[currentBoxSlotIndex].gameObject.SetActive(true);
-                pcSlots[currentBoxSlotIndex].SetSelected(true);
-                messageText.text = $"Page  {currentBoxIndex + 1}";
+                pcSlots[currentBoxSlotIndex].SetSelected(true); // Tên & Level thành màu Highlight
+                messageText.text = $"Page {currentBoxIndex + 1}";
             }
         }
-        // 3. XỬ LÝ MÀU CHỮ (GREEN) KHI ĐANG SWAP
-        foreach (var s in partySlots) s.SetNameColor(Color.black);
-        foreach (var s in pcSlots) s.SetNameColor(Color.black);
 
+        // 3. XỬ LÝ MÀU XANH (SWAP MODE) - Ghi đè màu tên nếu cần
         if (isSwapping)
         {
             messageText.text = "Swap Mode: Choose destination";
+
             if (selectedFromParty)
             {
-                // Nếu con đang cầm thuộc Party -> Đổi màu slot đó thành Xanh
+                // Nếu con đang cầm thuộc Party -> Đè màu tên thành Xanh
+                // (Dù nó đang được highlight bởi con trỏ hay không, nó cũng sẽ thành xanh)
                 partySlots[selectedMemberIndex].SetNameColor(Color.green);
             }
             else
             {
-                // Nếu con đang cầm thuộc Box -> Kiểm tra xem có đang ở đúng trang Box đó không
+                // Nếu con đang cầm thuộc Box -> Kiểm tra đúng trang
                 if (currentBoxIndex == selectedBoxIndex)
                 {
                     pcSlots[selectedMemberIndex].SetNameColor(Color.green);
@@ -313,7 +321,7 @@ public class StorageUI : MonoBehaviour
                 {
                     if (currentBoxIndex != selectedBoxIndex)
                     {
-                        messageText.text = "Cannot move between Boxes yet!";
+                        messageText.text = "Cannot move between Box yet!";
                         return; // Chưa hỗ trợ chuyển giữa các trang Box
                     }
                     // Logic đổi chỗ nội bộ trong cùng 1 Box (nếu muốn làm thêm)

@@ -17,6 +17,7 @@ public class PartyMemberUI : MonoBehaviour
     public void SetNameColor(Color color)
     {
         nameText.color = color;
+        levelText.color = color;
     }
     public void SetData(Monster monster)
     {
@@ -28,7 +29,7 @@ public class PartyMemberUI : MonoBehaviour
         _monster = monster;
         // Cập nhật thông tin tĩnh
         nameText.text = monster.Base.Name;
-        levelText.text = "Lv : " + monster.Level;
+        levelText.text = "Lv: " + monster.Level;
         monsterImage.sprite = monster.Base.LeftSprite;
         monsterImage.color = (monster.HP > 0) ? new Color(1, 1, 1, 1f) : Color.gray;
         SetExp();
