@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c54d7d7a7bd9bd42af5dda912ed57f8, type: 3}
+  m_Name: SuperPottion
+  m_EditorClassIdentifier: 
+  name: SuperPottion
+  description: 50 hp
+  icon: {fileID: 1919834766, guid: 009271d67b9437847b501b787448b41f, type: 3}
+  hpAmount: 50
+  restoreMaxHp: 1
+  restoreMaxPP: 0
+  ppAmount: 0
+  status: 0
+  recoverAllStatus: 0

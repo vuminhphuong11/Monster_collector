@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,8 @@ public enum GameState
     Dialog,
     Cutscene,
     Menu,
-    Storage
+    Storage,
+    Bag
 
 }
 public class GameController : MonoBehaviour
@@ -18,6 +20,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] PlayerController playerController;
     [SerializeField] StorageUI storageUI;
+    [SerializeField] InventoryUI inventoryUI;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
     GameState state;
@@ -151,6 +154,15 @@ public class GameController : MonoBehaviour
         {
             storageUI.HandleUpdate();
         }
+        else if(state== GameState.Bag)
+        {
+            Action onBack = () =>
+            {
+                inventoryUI.gameObject.SetActive(false);
+                state = GameState.FreeRoam;
+            };
+            inventoryUI.HandleUpdate(onBack);
+        } 
     }
     public void SetCurrentScene(SceneDetail currScene)
     {
@@ -171,6 +183,9 @@ public class GameController : MonoBehaviour
         else if(selectedItem == 1)
         {
             //bag
+            inventoryUI.gameObject.SetActive(true);
+            state=GameState.Bag;
+            return;
         }
         else if(selectedItem == 2)
         {
