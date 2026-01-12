@@ -13,8 +13,8 @@ public class StorageUI : MonoBehaviour
 
     [Header("PC Box Area (Right - Max 6)")]
     [SerializeField] List<PartyMemberUI> pcSlots;
-    [SerializeField] TMP_Text boxNameText;
     [SerializeField] TMP_Text messageText;
+    [SerializeField] TMP_Text regenInfoText;
 
     MonsterParty playerParty;
     MonsterStorage storage;
@@ -55,8 +55,6 @@ public class StorageUI : MonoBehaviour
             partySlots[i].SetNameColor(Color.black); // Reset màu chữ về đen
         }
 
-        // 2. Cập nhật Box
-        boxNameText.text = $"Box {currentBoxIndex + 1}";
         List<Monster> boxMonsters = storage.GetMonstersInBox(currentBoxIndex);
         for (int i = 0; i < pcSlots.Count; i++)
         {
@@ -76,6 +74,7 @@ public class StorageUI : MonoBehaviour
     {
         if (state == StorageState.PartyFocus) HandlePartyInput();
         else if (state == StorageState.BoxFocus) HandleBoxInput();
+        UpdateRegenInfo();
     }
 
     void HandlePartyInput()
@@ -152,7 +151,68 @@ public class StorageUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X)) OnBack();
         UpdateSelectionVisual();
     }
+    void UpdateRegenInfo()
+    {
+        Monster selectedMonster = null;
 
+        // Xác định xem đang chọn con quái nào (Party hay Box)
+        if (state == StorageState.PartyFocus)
+        {
+            if (currentPartyIndex < playerParty.Monsters.Count)
+                selectedMonster = playerParty.Monsters[currentPartyIndex];
+        }
+        else if (state == StorageState.BoxFocus)
+        {
+            var boxMons = storage.GetMonstersInBox(currentBoxIndex);
+            if (currentBoxSlotIndex < boxMons.Count)
+                selectedMonster = boxMons[currentBoxSlotIndex];
+        }
+
+        // Cập nhật Text
+        if (selectedMonster != null)
+        {
+            if (selectedMonster.HP < selectedMonster.MaxHP && selectedMonster.HP > 0)
+            {
+                // --- SỬA DÒNG NÀY: Gọi hàm tính tổng ---
+                float totalTime = selectedMonster.GetTotalHealTimeLeft();
+
+                // Hiển thị tổng thời gian
+                // Ví dụ: "Full in: 45s"
+                regenInfoText.text = $"Full in: {FormatTime(totalTime)}";
+                regenInfoText.color = Color.yellow;
+            }
+            else if (selectedMonster.HP <= 0)
+            {
+                // Nếu đang hồi sinh (từ 0 máu)
+                float totalTime = selectedMonster.GetTotalHealTimeLeft();
+                regenInfoText.text = $"Revive in: {FormatTime(totalTime)}";
+                regenInfoText.color = Color.red;
+            }
+            else
+            {
+                regenInfoText.text = "Fully Healed";
+                regenInfoText.color = Color.green;
+            }
+        }
+        else
+        {
+            regenInfoText.text = "";
+        }
+    }
+    string FormatTime(float timeInSeconds)
+    {
+        if (timeInSeconds < 60)
+        {
+            return $"{timeInSeconds.ToString("F1")}s"; // VD: 45.5s
+        }
+        else
+        {
+            // Nếu hơn 60s thì hiển thị dạng Phút:Giây (VD: 2m 15s)
+            int minutes = Mathf.FloorToInt(timeInSeconds / 60);
+            int seconds = Mathf.FloorToInt(timeInSeconds % 60);
+            return $"{minutes}m {seconds}s";
+        }
+    }
     void UpdateSelectionVisual()
     {
         // 1. Reset trạng thái Selected (Highlight khung)
@@ -174,7 +234,7 @@ public class StorageUI : MonoBehaviour
             {
                 pcSlots[currentBoxSlotIndex].gameObject.SetActive(true);
                 pcSlots[currentBoxSlotIndex].SetSelected(true);
-                messageText.text = $"Box {currentBoxIndex + 1}";
+                messageText.text = $"Page  {currentBoxIndex + 1}";
             }
         }
         // 3. XỬ LÝ MÀU CHỮ (GREEN) KHI ĐANG SWAP

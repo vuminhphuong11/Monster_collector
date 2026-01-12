@@ -76,6 +76,14 @@ public class MonsterStorage : MonoBehaviour, ISavable
             party.Monsters.RemoveAt(partyIndex);
         }
     }
+    private void Update()
+    {
+        // Duyệt qua tất cả quái trong danh sách lưu trữ
+        foreach (var monster in storedMonsters)
+        {
+            monster.HandlePassiveRegen();
+        }
+    }
 
     // --- PHẦN SAVE/LOAD QUAN TRỌNG ---
 

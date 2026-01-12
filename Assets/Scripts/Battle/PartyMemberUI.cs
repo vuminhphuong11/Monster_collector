@@ -16,21 +16,45 @@ public class PartyMemberUI : MonoBehaviour
     Monster _monster;
     public void SetNameColor(Color color)
     {
-        // nameText là biến TMP_Text hoặc Text hiển thị tên Pokemon của bạn
         nameText.color = color;
     }
     public void SetData(Monster monster)
     {
+        // 1. HỦY ĐĂNG KÝ con quái cũ (nếu có) để tránh lỗi
+        if (_monster != null)
+        {
+            _monster.OnHPChanged -= UpdateHP;
+        }
         _monster = monster;
+        // Cập nhật thông tin tĩnh
         nameText.text = monster.Base.Name;
         levelText.text = "Lv : " + monster.Level;
-        hpBar.SetHP((float)monster.HP / monster.MaxHP);
         monsterImage.sprite = monster.Base.LeftSprite;
-        monsterImage.color = (monster.HP >= 0) ? new Color(1, 1, 1, 1f) : Color.gray;
-        // 2. THÊM MỚI: Gọi hàm cập nhật EXP
+        monsterImage.color = (monster.HP > 0) ? new Color(1, 1, 1, 1f) : Color.gray;
         SetExp();
+        UpdateHP();
+        _monster.OnHPChanged += UpdateHP;
     }
-    // 3. THÊM MỚI: Hàm hiển thị EXP (Logic lấy từ BattleHub)
+    void UpdateHP()
+    {
+        if (_monster != null)
+        {
+            hpBar.SetHP((float)_monster.HP / _monster.MaxHP);
+
+            // Cập nhật lại màu sắc nếu vừa hồi sinh từ 0 lên 1
+            if (_monster.HP > 0 && monsterImage.color == Color.gray)
+            {
+                monsterImage.color = new Color(1, 1, 1, 1f);
+            }
+        }
+    }
+    private void OnDisable()
+    {
+        if (_monster != null)
+        {
+            _monster.OnHPChanged -= UpdateHP;
+        }
+    }
     public void SetExp()
     {
         if (expBar == null) return;

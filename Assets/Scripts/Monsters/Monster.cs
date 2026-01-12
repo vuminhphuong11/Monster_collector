@@ -9,6 +9,7 @@ public class Monster
 {
     [SerializeField] MonsterBase _base;
     [SerializeField] int level;
+    public event System.Action OnHPChanged;
     public Monster(MonsterBase pBase,int plevel)
     {
         _base=pBase;
@@ -69,6 +70,57 @@ public class Monster
         VolatileStatus = null;
         
 
+    }
+    public float GetTotalHealTimeLeft()
+    {
+        // Nếu máu đã đầy, trả về 0
+        if (HP >= MaxHP) return 0;
+        float timeToHeal1HP = 1f + (Level * 0.2f); // Công thức tốc độ hồi (phải khớp với HandlePassiveRegen)
+        int missingHP = MaxHP - HP; 
+        float timeForCurrentHP = Mathf.Max(0, timeToHeal1HP - regenTimer);
+        if (missingHP > 1)
+        {
+            return timeForCurrentHP + ((missingHP - 1) * timeToHeal1HP);
+        }
+        else
+        {
+            // Nếu chỉ thiếu đúng 1 giọt
+            return timeForCurrentHP;
+        }
+    }
+    public float GetTimeUntilNextHeal()
+    {
+        // Nếu máu đầy hoặc chết (tùy logic bạn chọn), trả về 0
+        if (HP >= MaxHP) return 0;
+
+        float timeToHeal1HP = 1f + (Level * 0.2f); // Công thức phải khớp với hàm HandlePassiveRegen
+        return Mathf.Max(0, timeToHeal1HP - regenTimer);
+    }
+    private float regenTimer = 0f;
+    public void HandlePassiveRegen()
+    {
+        // 1. Chỉ dừng lại nếu Máu đã đầy
+        if (HP >= MaxHP)
+        {
+            regenTimer = 0;
+            return;
+        }
+        float timeToHeal1HP = 1f + (Level * 0.2f);
+        regenTimer += Time.deltaTime;
+        if (regenTimer >= timeToHeal1HP)
+        {
+            HP++;
+            regenTimer = 0;
+            // 2. GỌI SỰ KIỆN: Báo cho UI biết máu đã tăng
+            OnHPChanged?.Invoke();
+            if (HP == 1)
+            {
+                CureStatus();
+                CureVolatileStatus();
+                // Gọi thêm lần nữa để cập nhật trạng thái nếu cần
+                OnHPChanged?.Invoke();
+            }
+        }
     }
     public void CycleMove(Move moveUsed)
     {
