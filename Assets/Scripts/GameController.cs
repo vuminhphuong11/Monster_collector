@@ -9,14 +9,15 @@ public enum GameState
     Battle,
     Dialog,
     Cutscene,
-    Menu
-    
+    Menu,
+    Storage
+
 }
 public class GameController : MonoBehaviour
 {
 
     [SerializeField] PlayerController playerController;
-
+    [SerializeField] StorageUI storageUI;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
     GameState state;
@@ -146,6 +147,10 @@ public class GameController : MonoBehaviour
         {
             menuController.HandleUpdate();
         }
+        else if (state == GameState.Storage)
+        {
+            storageUI.HandleUpdate();
+        }
     }
     public void SetCurrentScene(SceneDetail currScene)
     {
@@ -156,7 +161,12 @@ public class GameController : MonoBehaviour
     {
         if (selectedItem == 0)
         {
-            //monster
+            storageUI.gameObject.SetActive(true);
+            state = GameState.Storage; // Chuyển state để chặn Player di chuyển
+            var playerParty = playerController.GetComponent<MonsterParty>();
+            storageUI.Init(playerParty);
+            return;
+
         }
         else if(selectedItem == 1)
         {
@@ -174,5 +184,13 @@ public class GameController : MonoBehaviour
         }
         state= GameState.FreeRoam;
 
+    }
+    public void CloseStorage()
+    {
+        // Tắt UI
+        storageUI.gameObject.SetActive(false);
+
+        // Trả lại quyền điều khiển cho nhân vật
+        state = GameState.FreeRoam;
     }
 }

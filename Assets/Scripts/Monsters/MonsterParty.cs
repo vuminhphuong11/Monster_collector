@@ -5,35 +5,43 @@ using UnityEngine;
 
 public class MonsterParty : MonoBehaviour
 {
-    [SerializeField] List<Monster> monsters ;
+    [SerializeField] List<Monster> monsters;
 
     public List<Monster> Monsters
     {
         get { return monsters; }
         set { monsters = value; }
     }
+
     private void Start()
     {
-        foreach(var monster in monsters)
+        foreach (var monster in monsters)
         {
             monster.Init();
         }
     }
+
     public Monster GetHealthyMonster()
     {
-        return monsters.Where(x=>x.HP >0).FirstOrDefault();
+        return monsters.Where(x => x.HP > 0).FirstOrDefault();
     }
-    public void AddMonster(Monster newmonster)
+
+    // --- SỬA ĐỔI CHÍNH TẠI ĐÂY ---
+    public bool AddMonster(Monster newMonster)
     {
-        if(monsters.Count<3)
-        {  
-            monsters.Add(newmonster); 
+        // Bạn đang để giới hạn là 3, hãy sửa thành 6 nếu muốn đúng chuẩn Pokemon
+        if (monsters.Count < 3)
+        {
+            monsters.Add(newMonster);
+            Debug.Log("Added to Party.");
+            return true; // Đã thêm vào Party
         }
         else
         {
-            // them vao pc
+            // Nếu đầy, tự động gửi vào MonsterStorage
+            MonsterStorage.Instance.AddMonster(newMonster);
+            Debug.Log("Party full! Transferred to PC Box.");
+            return false; // Đã chuyển vào Box
         }
-         
     }
 }
-

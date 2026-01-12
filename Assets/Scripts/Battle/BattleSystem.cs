@@ -713,12 +713,28 @@ public class BattleSystem : MonoBehaviour
         }
         if (shakeCount == 4)
         {
-            //monster caught
+            // --- MONSTER CAUGHT ---
             yield return dialogBox.TypeDialog($"{enemyUnit.Monster.Base.Name} was caught!");
-            yield return monsterBook.transform.DOMoveY(catchPosition.y -1.5f, 0.5f).WaitForCompletion();
+
+            yield return monsterBook.transform.DOMoveY(catchPosition.y - 1.5f, 0.5f).WaitForCompletion();
             yield return monsterBook.DOFade(0, 1.5f).WaitForCompletion();
-            playerParty.AddMonster(enemyUnit.Monster);
-            yield return dialogBox.TypeDialog($"{enemyUnit.Monster.Base.Name} was add to you party!");
+
+            // --- SỬA ĐOẠN NÀY ---
+
+            // Gọi hàm AddMonster và nhận kết quả trả về
+            bool addedToParty = playerParty.AddMonster(enemyUnit.Monster);
+
+            if (addedToParty)
+            {
+                yield return dialogBox.TypeDialog($"{enemyUnit.Monster.Base.Name} has been added to your party!");
+            }
+            else
+            {
+                yield return dialogBox.TypeDialog("The party is full!");
+                yield return dialogBox.TypeDialog($"{enemyUnit.Monster.Base.Name} was transferred to the PC Box!");
+            }
+            // --------------------
+
             Destroy(monsterBook.gameObject);
             BattleOver(true);
         }

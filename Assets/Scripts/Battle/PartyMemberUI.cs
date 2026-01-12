@@ -14,13 +14,17 @@ public class PartyMemberUI : MonoBehaviour
     // 1. THÊM MỚI: Biến tham chiếu tới thanh EXP
     [SerializeField] GameObject expBar;
     Monster _monster;
+    public void SetNameColor(Color color)
+    {
+        // nameText là biến TMP_Text hoặc Text hiển thị tên Pokemon của bạn
+        nameText.color = color;
+    }
     public void SetData(Monster monster)
     {
         _monster = monster;
         nameText.text = monster.Base.Name;
         levelText.text = "Lv : " + monster.Level;
         hpBar.SetHP((float)monster.HP / monster.MaxHP);
-        // hpBar.SetHP... (Dòng này bị lặp trong code gốc của bạn, tôi đã bỏ bớt 1 dòng dư)
         monsterImage.sprite = monster.Base.LeftSprite;
         monsterImage.color = (monster.HP >= 0) ? new Color(1, 1, 1, 1f) : Color.gray;
         // 2. THÊM MỚI: Gọi hàm cập nhật EXP
