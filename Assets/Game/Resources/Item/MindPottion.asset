@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c54d7d7a7bd9bd42af5dda912ed57f8, type: 3}
+  m_Name: MindPottion
+  m_EditorClassIdentifier: 
+  name: MindPottion
+  description: get out form all debuff status
+  icon: {fileID: -1902851979, guid: d3d7bc000eefa0a429e15b43259deb10, type: 3}
+  hpAmount: 0
+  restoreMaxHp: 0
+  restoreMaxPP: 0
+  ppAmount: 0
+  status: 0
+  recoverAllStatus: 1

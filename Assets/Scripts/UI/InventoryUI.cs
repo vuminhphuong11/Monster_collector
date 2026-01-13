@@ -14,10 +14,13 @@ public class InventoryUI : MonoBehaviour
 
     Inventory inventory;
     int selectedItem = 0;
+    const int itemsInViewpost = 4;
     List<ItemSlotUI> slotUIList;
+    RectTransform itemListRect;
     private void Awake()
     {
         inventory = Inventory.GetInventory();
+        itemListRect = itemList.GetComponent<RectTransform>();
     }
     private void Start()
     {
@@ -73,5 +76,11 @@ public class InventoryUI : MonoBehaviour
         var item = inventory.Slots[selectedItem];
         itemIcon.sprite=item.Item.Icon;
         ItemDesText.text=item.Item.Description;
+        HandleScrolling();
+    }
+    void HandleScrolling()
+    {
+        float scrollingPos = Mathf.Clamp(selectedItem-itemsInViewpost,0,selectedItem )* slotUIList[0].Height;
+        itemListRect.localPosition=new Vector2(itemListRect.localPosition.x, scrollingPos);
     }
 }
