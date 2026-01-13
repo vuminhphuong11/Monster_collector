@@ -1,9 +1,7 @@
 using DG.Tweening;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 public enum BattleState { START, ACTIONSELECTION, MOVESELECTION,  RUNINGTURN, BUSY,PARTYSCREEN,ABOUTTOUSE,MOVETOFORGET,BATTLEOVER, BAG }

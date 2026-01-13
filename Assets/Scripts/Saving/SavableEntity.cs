@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [ExecuteAlways]
 public class SavableEntity : MonoBehaviour
@@ -12,7 +15,7 @@ public class SavableEntity : MonoBehaviour
 
     public string UniqueId => uniqueId;
 
-    // Used to capture state of the gameobject on which the savableEntity is attached
+    // Giữ nguyên logic CaptureState
     public object CaptureState()
     {
         Dictionary<string, object> state = new Dictionary<string, object>();
@@ -23,7 +26,7 @@ public class SavableEntity : MonoBehaviour
         return state;
     }
 
-    // Used to restore state of the gameobject on which the savableEntity is attached
+    // Giữ nguyên logic RestoreState
     public void RestoreState(object state)
     {
         Dictionary<string, object> stateDict = (Dictionary<string, object>)state;
@@ -37,25 +40,39 @@ public class SavableEntity : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    // Update method used for generating UUID of the SavableEntity
-    private void Update()
+    // ĐỔI TỪ UPDATE SANG ONVALIDATE ĐỂ TỐI ƯU VÀ BẮT LỖI
+    private void OnValidate()
     {
-        // don't execute in playmode
+        // Không chạy khi đang Play game
         if (Application.IsPlaying(gameObject)) return;
 
-        // don't generate Id for prefabs (prefab scene will have path as null)
+        // Không chạy cho Prefab chưa kéo vào scene (tránh lỗi null path)
         if (String.IsNullOrEmpty(gameObject.scene.path)) return;
 
-        SerializedObject serializedObject = new SerializedObject(this);
-        SerializedProperty property = serializedObject.FindProperty("uniqueId");
-
-        if (String.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))
+        // --- BẮT ĐẦU BẪY LỖI ---
+        try
         {
-            property.stringValue = Guid.NewGuid().ToString();
-            serializedObject.ApplyModifiedProperties();
-        }
+            SerializedObject serializedObject = new SerializedObject(this);
+            SerializedProperty property = serializedObject.FindProperty("uniqueId");
 
-        globalLookup[property.stringValue] = this;
+            if (String.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))
+            {
+                property.stringValue = Guid.NewGuid().ToString();
+                serializedObject.ApplyModifiedProperties();
+            }
+
+            globalLookup[property.stringValue] = this;
+        }
+        catch (System.Exception ex)
+        {
+            // NẾU CÓ LỖI, NÓ SẼ CHẠY VÀO ĐÂY VÀ BÁO TÊN VẬT THỂ
+            string objectName = gameObject.name;
+            string parentName = transform.parent != null ? transform.parent.name : "None";
+
+            Debug.LogError($"[BẮT ĐƯỢC THỦ PHẠM] Lỗi tại GameObject: '{objectName}' (Cha: {parentName}). " +
+                           $"Scene: {gameObject.scene.name}. " +
+                           $"Chi tiết lỗi: {ex.Message}");
+        }
     }
 #endif
 
@@ -65,14 +82,12 @@ public class SavableEntity : MonoBehaviour
 
         if (globalLookup[candidate] == this) return true;
 
-        // Handle scene unloading cases
         if (globalLookup[candidate] == null)
         {
             globalLookup.Remove(candidate);
             return true;
         }
 
-        // Handle edge cases like designer manually changing the UUID
         if (globalLookup[candidate].UniqueId != candidate)
         {
             globalLookup.Remove(candidate);
