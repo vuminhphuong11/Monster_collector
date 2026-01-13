@@ -8,6 +8,7 @@ public class Inventory : MonoBehaviour
 {
     [SerializeField] List<ItemSlot> slots;
     public List<ItemSlot> Slots => slots;
+
     public static Inventory GetInventory()
     {
         return FindObjectOfType<PlayerController>().GetComponent<Inventory>();
@@ -26,9 +27,12 @@ public class Inventory : MonoBehaviour
     }
     public void RemoveItem(ItemBase item)
     {
+        // Nếu là vật phẩm bắt quái (vĩnh viễn) thì không xóa
+        if (item is CaptureItem) return;
+
         var itemSlot = slots.First(slot => slot.Item == item);
         itemSlot.Count--;
-        if(itemSlot.Count == 0 )
+        if (itemSlot.Count == 0)
         {
             slots.Remove(itemSlot);
         }

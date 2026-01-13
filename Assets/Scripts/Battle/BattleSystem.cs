@@ -6,8 +6,8 @@ using System.Linq;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
-public enum BattleState { START, ACTIONSELECTION, MOVESELECTION,  RUNINGTURN, BUSY,PARTYSCREEN,ABOUTTOUSE,MOVETOFORGET,BATTLEOVER}
-public enum BattleAction { Move, SwitchMonster,UseItem,Run}
+public enum BattleState { START, ACTIONSELECTION, MOVESELECTION,  RUNINGTURN, BUSY,PARTYSCREEN,ABOUTTOUSE,MOVETOFORGET,BATTLEOVER, BAG }
+public enum BattleAction { Move, SwitchMonster,UseItem,Run, Capture }
 public class BattleSystem : MonoBehaviour
 {
     [SerializeField] BattleUnit playerUnit;
@@ -19,7 +19,8 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] Text vesusText;
     [SerializeField] GameObject monsterBookSprite;
     [SerializeField] MoveSelectionUI moveSelectionUI;
-
+    [SerializeField] InventoryUI inventoryUI;
+    Inventory inventory;
     bool playerSwitchedAfterFaint = false;
     bool enemySwitchedAfterFaint = false;
     bool hasEngaged = false; // Biến đánh dấu đã giao tranh hay chưa
@@ -59,6 +60,7 @@ public class BattleSystem : MonoBehaviour
         hasEngaged = false;
         playerUnit.Clear();
         enemyUnit.Clear();
+        inventory = player.GetComponent<Inventory>();
         if (!isBossBattle)
         {
             //wild monster
@@ -194,26 +196,35 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            if(playerAction == BattleAction.SwitchMonster)
+            if (playerAction == BattleAction.SwitchMonster)
             {
                 var selectedMonster = playerParty.Monsters[currentMember];
                 state = BattleState.BUSY;
                 yield return SwitchMonster(selectedMonster);
             }
-            else if (playerAction == BattleAction.UseItem)
+            else if (playerAction == BattleAction.Capture) // THAY ĐỔI TẠI ĐÂY
             {
                 dialogBox.EnableActionSelector(false);
-                yield return OpenMonsterbook();
+                yield return OpenMonsterbook(); // Chỉ ném sách khi hành động là Capture
             }
-            else if(playerAction == BattleAction.Run)
+            else if (playerAction == BattleAction.UseItem)
+            {
+                // Không làm gì cả vì item đã được thực thi trong hàm UseItemInBattle rồi.
+                // Code sẽ chạy tiếp xuống phần lượt của Enemy phía dưới.
+            }
+            else if (playerAction == BattleAction.Run)
             {
                 yield return StartCoroutine(TryToEscape());
             }
-                //enemy turn
+
+            // Sau khi thực hiện xong hành động của Player (Hồi máu hoặc Bắt hụt)
+            // Enemy sẽ bắt đầu lượt đánh:
+            if (state != BattleState.BATTLEOVER)
+            {
                 var enemyMove = enemyUnit.Monster.GetRandomMove();
-            yield return RunMove(enemyUnit,playerUnit,enemyMove);
-            yield return RunAfterTurn(enemyUnit);
-            if (state == BattleState.BATTLEOVER) yield break;
+                yield return RunMove(enemyUnit, playerUnit, enemyMove);
+                yield return RunAfterTurn(enemyUnit);
+            }
         }
         if(state!= BattleState.BATTLEOVER)
         {
@@ -485,6 +496,14 @@ public class BattleSystem : MonoBehaviour
             // Handle party screen input (not implemented in this snippet)
             HandlePartySelection();
         }
+        else if (state == BattleState.BAG)
+        {
+            inventoryUI.HandleUpdate(() => {
+                // Đây là logic khi bấm phím X để quay lại
+                inventoryUI.gameObject.SetActive(false);
+                ActionSelection(); // Quay lại bảng chọn hành động (Fight, Bag...)
+            });
+        }
         else if(state == BattleState.MOVETOFORGET)
         {
             Action<int> onMoveSelected = (moveIndex) =>
@@ -542,7 +561,7 @@ public class BattleSystem : MonoBehaviour
             else if (currentAction == 1)
             {
                 //Bag
-                StartCoroutine(RunTurns(BattleAction.UseItem));
+                OpenInventory();
             }
             else if (currentAction == 2)
             {
@@ -555,6 +574,52 @@ public class BattleSystem : MonoBehaviour
                 //Run
                 StartCoroutine(RunTurns(BattleAction.Run));
             }
+        }
+    }
+    void OpenInventory()
+    {
+        state = BattleState.BAG;
+        inventoryUI.gameObject.SetActive(true);
+        inventoryUI.OpenInventory(OnItemSelectedFromBag, () => {
+            inventoryUI.gameObject.SetActive(false);
+            ActionSelection();
+        });
+    }
+    // Hàm xử lý khi người chơi chọn 1 Item trong Bag
+    void OnItemSelectedFromBag(ItemBase item)
+    {
+        inventoryUI.gameObject.SetActive(false);
+
+        if (item is CaptureItem)
+        {
+            // Truyền BattleAction.Capture thay vì UseItem
+            StartCoroutine(RunTurns(BattleAction.Capture));
+        }
+        else
+        {
+            // Đây là các item hồi máu bình thường
+            StartCoroutine(UseItemInBattle(item));
+        }
+    }
+    IEnumerator UseItemInBattle(ItemBase item)
+    {
+        state = BattleState.BUSY;
+        if (inventory == null) inventory = Inventory.GetInventory();
+
+        bool canUse = item.Use(playerUnit.Monster);
+        if (canUse)
+        {
+            inventory.RemoveItem(item);
+            yield return dialogBox.TypeDialog($"Used {item.Name}!");
+            yield return playerUnit.Hub.UpdateHP();
+
+            // Gọi RunTurns với UseItem để bỏ qua lượt player và cho enemy đánh
+            StartCoroutine(RunTurns(BattleAction.UseItem));
+        }
+        else
+        {
+            yield return dialogBox.TypeDialog("It won't have any effect!");
+            ActionSelection();
         }
     }
 

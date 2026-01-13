@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Image downArrow;
     [SerializeField] Text ItemDesText;
     [SerializeField] StorageUI partyScreen;
-
+    Action<ItemBase> onItemUsed;
     Inventory inventory;
     int selectedItem = 0;
     const int itemsInViewpost = 5;
@@ -46,7 +47,13 @@ public class InventoryUI : MonoBehaviour
     {
         foreach (Transform child in itemList.transform) Destroy(child.gameObject);
         slotUIList = new List<ItemSlotUI>();
-        foreach (var itemSlot in inventory.Slots)
+
+        // Sắp xếp danh sách: CaptureItem sẽ nằm sau cùng
+        var sortedSlots = inventory.Slots
+            .OrderBy(slot => slot.Item is CaptureItem)
+            .ToList();
+
+        foreach (var itemSlot in sortedSlots)
         {
             var slotUIObj = Instantiate(itemSlotUI, itemList.transform);
             slotUIObj.SetData(itemSlot);
@@ -54,7 +61,19 @@ public class InventoryUI : MonoBehaviour
         }
         UpdateItemSelection();
     }
+    public void OpenInventory(Action<ItemBase> onSelected, Action onBack)
+    {
+        this.gameObject.SetActive(true);
+        state = InventoryUIState.ItemSelection;
+        UpdateItemList();
 
+        onItemUsed = onSelected;
+
+        // Lưu lại callback thoát
+        this.onBackAction = onBack;
+    }
+
+    Action onBackAction;
     public void HandleUpdate(Action onBack)
     {
         if (state == InventoryUIState.ItemSelection)
@@ -67,13 +86,23 @@ public class InventoryUI : MonoBehaviour
 
             if (preSelection != selectedItem) UpdateItemSelection();
 
-            // KHI BẤM Z: Mở Storage
             if (Input.GetKeyDown(KeyCode.Z))
             {
-                OpenMonsterStorageUI();
+                var item = inventory.Slots[selectedItem].Item;
+
+                // Nếu đang trong trận (onItemUsed có giá trị)
+                if (onItemUsed != null)
+                {
+                    onItemUsed?.Invoke(item);
+                }
+                else // Nếu ở ngoài map (Logic cũ của bạn)
+                {
+                    OpenMonsterStorageUI();
+                }
             }
-            else if (Input.GetKeyUp(KeyCode.X))
+            else if (Input.GetKeyDown(KeyCode.X))
             {
+                onItemUsed = null;
                 onBack?.Invoke();
             }
         }
@@ -128,9 +157,14 @@ public class InventoryUI : MonoBehaviour
     }
     void OnMonsterSelected(Monster selectedMonster)
     {
-        // 1. Gọi hàm UseItem từ Inventory
-        // Hàm này sẽ tự động gọi item.Use() và RemoveItem() nếu thành công
-        // Xem file Inventory.cs của bạn để thấy logic này
+        var item = inventory.Slots[selectedItem].Item;
+
+        // Kiểm tra nếu là vật phẩm bắt quái
+        if (item is CaptureItem)
+        {
+            partyScreen.SetMessageText("You already open the magic book!");
+            return;
+        }
         var usedItem = inventory.UseItem(selectedItem, selectedMonster);
 
         // 2. Kiểm tra kết quả

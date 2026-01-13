@@ -34,12 +34,19 @@ public class MonsterStorage : MonoBehaviour, ISavable
         }
     }
 
-    // ... (Các hàm AddMonster, SwapMonster, GetMonstersInBox giữ nguyên) ...
     public void AddMonster(Monster monster)
     {
         monster.HP = monster.MaxHP;
         monster.CureStatus();
         monster.CureVolatileStatus();
+        for (int i = 0; i < storedMonsters.Count; i++)
+        {
+            if (storedMonsters[i] == null)
+            {
+                storedMonsters[i] = monster;
+                return;
+            }
+        }
         storedMonsters.Add(monster);
     }
 
@@ -50,14 +57,21 @@ public class MonsterStorage : MonoBehaviour, ISavable
 
     public int GetTotalBoxes()
     {
-        return Mathf.Max(1, Mathf.CeilToInt((float)storedMonsters.Count / MONSTERS_PER_BOX) + 1);
+        if (storedMonsters.Count == 0) return 1;
+        // Tính dựa trên Index cuối cùng có quái vật
+        return Mathf.Max(1, Mathf.CeilToInt((float)storedMonsters.Count / MONSTERS_PER_BOX));
     }
-
     public void SwapMonster(int boxIndex, int slotIndex, int partyIndex, MonsterParty party)
     {
-        // ... (Logic Swap bạn đã có, giữ nguyên) ...
         int globalBoxIndex = boxIndex * MONSTERS_PER_BOX + slotIndex;
-        Monster boxMonster = (globalBoxIndex < storedMonsters.Count) ? storedMonsters[globalBoxIndex] : null;
+
+        // Đảm bảo danh sách đủ lớn để chứa Index này (tránh lỗi Index Out Of Range)
+        while (storedMonsters.Count <= globalBoxIndex)
+        {
+            storedMonsters.Add(null);
+        }
+
+        Monster boxMonster = storedMonsters[globalBoxIndex];
         Monster partyMonster = (partyIndex < party.Monsters.Count) ? party.Monsters[partyIndex] : null;
 
         if (boxMonster != null && partyMonster != null)
@@ -68,24 +82,25 @@ public class MonsterStorage : MonoBehaviour, ISavable
         else if (boxMonster != null && partyMonster == null)
         {
             party.Monsters.Add(boxMonster);
-            storedMonsters.RemoveAt(globalBoxIndex);
+            storedMonsters[globalBoxIndex] = null; // Giữ ô trống tại Index này
         }
         else if (boxMonster == null && partyMonster != null)
         {
-            AddMonster(partyMonster);
+            storedMonsters[globalBoxIndex] = partyMonster; // Đặt đúng vào ô đã chọn
             party.Monsters.RemoveAt(partyIndex);
         }
     }
     private void Update()
     {
-        // Duyệt qua tất cả quái trong danh sách lưu trữ
         foreach (var monster in storedMonsters)
         {
-            monster.HandlePassiveRegen();
+            if (monster != null) // QUAN TRỌNG: Phải kiểm tra null
+            {
+                monster.HandlePassiveRegen();
+            }
         }
     }
 
-    // --- PHẦN SAVE/LOAD QUAN TRỌNG ---
 
     public object CaptureState()
     {
