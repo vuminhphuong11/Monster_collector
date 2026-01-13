@@ -36,6 +36,7 @@ public class GameController : MonoBehaviour
         MonsterDB.Init();
         MoveDB.Init();
         ConditionsDB.Init();
+        ItemDB.Init();
     }
     public SceneDetail CurrentScene {  get; set; }
     public  SceneDetail PreScene { get; set; }
