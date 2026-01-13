@@ -10,4 +10,9 @@ public class ItemBase : ScriptableObject
     public string Name { get { return name; } }
     public string Description { get { return description; } }
     public Sprite Icon { get { return icon; } }
+    // chonj quai vat lam input cho item
+    public virtual bool Use(Monster monster)
+    {
+        return false;
+    }
 }

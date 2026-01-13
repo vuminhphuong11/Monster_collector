@@ -294,14 +294,47 @@ public class Monster
         float a = (2 * attacker.Level + 10) / 250f;
         float d = a * move.Base.Power * ((float)attack / defense) +2;
         int damage = Mathf.FloorToInt(d * modifier);
-        UpdateHp(damage);
+        DecreaseHP(damage);
         
         return damageDetails;
     }
-    public void UpdateHp(int damage)
+    public void DecreaseHP(int damage)
     {
         HP=Mathf.Clamp(HP-damage, 0, MaxHP);
         HpChange = true;
+    }
+    public void IncreaseHP(int amount)
+    {
+        HP = Mathf.Clamp(HP + amount, 0, MaxHP);
+        HpChange = true;
+    }
+    // item hàm
+
+    // Hàm hồi phục toàn bộ PP (như Elixir/Max Elixir)
+    public void HealAllPP()
+    {
+        foreach (var move in Moves)
+        {
+            move.PP = move.Base.PP;
+        }
+    }
+    //  PP cho tất cả các chiêu một lượng nhỏ
+    public void RestorePP(int amount)
+    {
+        foreach (var move in Moves)
+        {
+            move.PP = Mathf.Clamp(move.PP + amount, 0, move.Base.PP);
+        }
+    }
+
+    // Kiểm tra xem Monster có cần hồi PP không (để tránh dùng phí item)
+    public bool NeedsPPHeal()
+    {
+        foreach (var move in Moves)
+        {
+            if (move.PP < move.Base.PP) return true;
+        }
+        return false;
     }
 
     public void SetStatus(ConditionID conditionID)

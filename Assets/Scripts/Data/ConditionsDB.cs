@@ -22,7 +22,7 @@ public class ConditionsDB
                 StartMessage="has been Poisoned",
                 OnAfterTurn = (Monster monster) =>
                 {
-                    monster.UpdateHp(monster.MaxHP/12);
+                    monster.DecreaseHP(monster.MaxHP/12);
                     monster.StatusChanges.Enqueue($"{monster.Base.Name} hurt itself due to Poison");
                 }
             }
@@ -35,7 +35,7 @@ public class ConditionsDB
                 StartMessage="has been Burn",
                 OnAfterTurn = (Monster monster) =>
                 {
-                    monster.UpdateHp(monster.MaxHP/16);
+                    monster.DecreaseHP(monster.MaxHP/16);
                     monster.StatusChanges.Enqueue($"{monster.Base.Name} hurt by Burn!");
                 }
             }
@@ -129,7 +129,7 @@ public class ConditionsDB
                     if(Random.Range(1,3)==1) return true;
                     // hurt by confusion
                     monster.StatusChanges.Enqueue($"{monster.Base.Name} is Confused!");
-                    monster.UpdateHp(monster.MaxHP/8);
+                    monster.DecreaseHP(monster.MaxHP/8);
                     monster.StatusChanges.Enqueue($"It hurt iself due to Confusion!");
                     return false;
                 }

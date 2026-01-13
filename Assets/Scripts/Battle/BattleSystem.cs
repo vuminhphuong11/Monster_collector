@@ -54,8 +54,6 @@ public class BattleSystem : MonoBehaviour
         boss=bossParty.GetComponent<BossController>();
         StartCoroutine(SetupBattle());
     }
-
-
     public IEnumerator SetupBattle()
     {
         hasEngaged = false;
@@ -287,8 +285,6 @@ public class BattleSystem : MonoBehaviour
         }
 
     }
-    // --- SỬA THAM SỐ ĐẦU VÀO: Monster -> BattleUnit ---
-    // Trong file BattleSystem.cs
 
     IEnumerator RunMoveEffects(MoveEffect effects, BattleUnit sourceUnit, BattleUnit targetUnit,MoveTarget moveTarget)
     {
