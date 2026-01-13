@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using System;
 public enum StorageState { PartyFocus, BoxFocus, Busy }
 
 public class StorageUI : MonoBehaviour
@@ -29,6 +29,10 @@ public class StorageUI : MonoBehaviour
     int selectedMemberIndex = -1; // Lưu vị trí slot của con đang cầm
     int selectedBoxIndex = -1;    // Lưu trang Box của con đang cầm (nếu cầm từ Box)
     bool selectedFromParty = false; // True = Cầm từ Party, False = Cầm từ Box
+    //  BIẾN CHO CHẾ ĐỘ CHỌN (ITEM) ---
+    bool selectionMode = false;       // Cờ đánh dấu đang ở chế độ chọn hay chế độ kho
+    Action<Monster> onSelectedHandler; // Callback khi chọn xong
+    Action onBackHandler;
 
     public void Init(MonsterParty party)
     {
@@ -38,6 +42,20 @@ public class StorageUI : MonoBehaviour
         currentBoxSlotIndex = 0;
         state = StorageState.PartyFocus;
         isSwapping = false;
+        selectionMode = false;
+        Refresh();
+    }
+    public void EnableSelectionMode(MonsterParty party, Action<Monster> onSelected, Action onBack)
+    {
+        playerParty = party; // Cần tham chiếu này để hiển thị Party
+        storage = MonsterStorage.Instance;
+
+        selectionMode = true;
+        onSelectedHandler = onSelected;
+        onBackHandler = onBack;
+
+        state = StorageState.PartyFocus; // Mặc định trỏ vào Party
+        currentPartyIndex = 0;
         Refresh();
     }
 
@@ -94,7 +112,22 @@ public class StorageUI : MonoBehaviour
             state = StorageState.BoxFocus;
             currentBoxSlotIndex = 0;
         }
-        if (Input.GetKeyDown(KeyCode.Z)) OnPressSelect(true);
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (selectionMode)
+            {
+                // Nếu đang ở chế độ chọn Item -> Trả về Monster đang trỏ
+                if (currentPartyIndex < playerParty.Monsters.Count)
+                {
+                    onSelectedHandler?.Invoke(playerParty.Monsters[currentPartyIndex]);
+                }
+            }
+            else
+            {
+                // Chế độ kho bình thường -> Gọi hàm Swap
+                OnPressSelect(true);
+            }
+        }
         if (Input.GetKeyDown(KeyCode.X)) OnBack();
         UpdateSelectionVisual();
     }
@@ -103,27 +136,14 @@ public class StorageUI : MonoBehaviour
     {
         int itemsInCurrentBox = storage.GetMonstersInBox(currentBoxIndex).Count;
         int totalBoxes = storage.GetTotalBoxes();
-        // --- DOWN ---
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (currentBoxSlotIndex < itemsInCurrentBox - 1)
-            {
-                currentBoxSlotIndex++;
-            }
-            else if (currentBoxIndex < totalBoxes - 1)
-            {
-                currentBoxIndex++;
-                currentBoxSlotIndex = 0;
-                Refresh();
-            }
+            if (currentBoxSlotIndex < itemsInCurrentBox - 1) currentBoxSlotIndex++;
+            else if (currentBoxIndex < totalBoxes - 1) { currentBoxIndex++; currentBoxSlotIndex = 0; Refresh(); }
         }
-        // --- UP ---
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (currentBoxSlotIndex > 0)
-            {
-                currentBoxSlotIndex--;
-            }
+            if (currentBoxSlotIndex > 0) currentBoxSlotIndex--;
             else if (currentBoxIndex > 0)
             {
                 currentBoxIndex--;
@@ -132,13 +152,11 @@ public class StorageUI : MonoBehaviour
                 Refresh();
             }
         }
-        // --- LEFT ---
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             state = StorageState.PartyFocus;
             currentPartyIndex = Mathf.Clamp(currentPartyIndex, 0, playerParty.Monsters.Count - 1);
         }
-        // --- PAGE SWITCH ---
         if (Input.GetKeyDown(KeyCode.W))
         {
             if (currentBoxIndex < totalBoxes - 1) { currentBoxIndex++; currentBoxSlotIndex = 0; Refresh(); }
@@ -147,7 +165,22 @@ public class StorageUI : MonoBehaviour
         {
             if (currentBoxIndex > 0) { currentBoxIndex--; currentBoxSlotIndex = 0; Refresh(); }
         }
-        if (Input.GetKeyDown(KeyCode.Z)) OnPressSelect(false);
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (selectionMode)
+            {
+                // Cho phép dùng Item lên Pokemon trong Box (tùy chọn)
+                var boxMons = storage.GetMonstersInBox(currentBoxIndex);
+                if (currentBoxSlotIndex < boxMons.Count)
+                {
+                    onSelectedHandler?.Invoke(boxMons[currentBoxSlotIndex]);
+                }
+            }
+            else
+            {
+                OnPressSelect(false);
+            }
+        }
         if (Input.GetKeyDown(KeyCode.X)) OnBack();
         UpdateSelectionVisual();
     }
@@ -225,15 +258,16 @@ public class StorageUI : MonoBehaviour
             s.SetSelected(false);
             s.SetNameColor(Color.black);
         }
-
-        // 2. HIGHLIGHT CON TRỎ HIỆN TẠI (Tô màu highlight cho cả Tên và Level)
+        // 2. HIGHLIGHT
         if (state == StorageState.PartyFocus)
         {
             if (currentPartyIndex < partySlots.Count)
             {
                 partySlots[currentPartyIndex].gameObject.SetActive(true);
-                partySlots[currentPartyIndex].SetSelected(true); // Tên & Level thành màu Highlight
-                messageText.text = "Your Team!";
+                partySlots[currentPartyIndex].SetSelected(true);
+
+                // MỚI: Đổi text thông báo
+                messageText.text = selectionMode ? "Select Pokemon" : "Your Team!";
             }
         }
         else
@@ -241,30 +275,17 @@ public class StorageUI : MonoBehaviour
             if (currentBoxSlotIndex < pcSlots.Count)
             {
                 pcSlots[currentBoxSlotIndex].gameObject.SetActive(true);
-                pcSlots[currentBoxSlotIndex].SetSelected(true); // Tên & Level thành màu Highlight
-                messageText.text = $"Page {currentBoxIndex + 1}";
+                pcSlots[currentBoxSlotIndex].SetSelected(true);
+                messageText.text = selectionMode ? "Select Pokemon" : $"Page {currentBoxIndex + 1}";
             }
         }
 
-        // 3. XỬ LÝ MÀU XANH (SWAP MODE) - Ghi đè màu tên nếu cần
-        if (isSwapping)
+        // 3. SWAP MODE (Chỉ chạy nếu không phải selectionMode vì logic trên đã chặn rồi)
+        if (isSwapping && !selectionMode)
         {
             messageText.text = "Swap Mode: Choose destination";
-
-            if (selectedFromParty)
-            {
-                // Nếu con đang cầm thuộc Party -> Đè màu tên thành Xanh
-                // (Dù nó đang được highlight bởi con trỏ hay không, nó cũng sẽ thành xanh)
-                partySlots[selectedMemberIndex].SetNameColor(Color.green);
-            }
-            else
-            {
-                // Nếu con đang cầm thuộc Box -> Kiểm tra đúng trang
-                if (currentBoxIndex == selectedBoxIndex)
-                {
-                    pcSlots[selectedMemberIndex].SetNameColor(Color.green);
-                }
-            }
+            if (selectedFromParty) partySlots[selectedMemberIndex].SetNameColor(Color.green);
+            else if (currentBoxIndex == selectedBoxIndex) pcSlots[selectedMemberIndex].SetNameColor(Color.green);
         }
     }
 
@@ -338,11 +359,15 @@ public class StorageUI : MonoBehaviour
 
     void OnBack()
     {
-        if (isSwapping)
+        if (selectionMode)
         {
-            // Nếu đang cầm quái mà bấm X -> Hủy thao tác
+            // Nếu đang chọn Item -> Gọi callback Back để InventoryUI xử lý đóng
+            onBackHandler?.Invoke();
+        }
+        else if (isSwapping)
+        {
             isSwapping = false;
-            Refresh(); // Reset màu chữ về đen
+            Refresh();
         }
         else
         {

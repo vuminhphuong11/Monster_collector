@@ -30,6 +30,9 @@ public class GameController : MonoBehaviour
     {
         Instance = this;
         menuController = GetComponent<MenuController>();
+        // add this two line when the game done
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
         MonsterDB.Init();
         MoveDB.Init();
         ConditionsDB.Init();
