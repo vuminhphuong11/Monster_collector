@@ -73,6 +73,7 @@ public class InventoryUI : MonoBehaviour
         this.onBackAction = onBack;
     }
 
+
     Action onBackAction;
     public void HandleUpdate(Action onBack)
     {

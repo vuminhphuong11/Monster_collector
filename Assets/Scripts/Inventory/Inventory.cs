@@ -37,6 +37,20 @@ public class Inventory : MonoBehaviour
             slots.Remove(itemSlot);
         }
     }
+    // Thêm vào file Inventory.cs
+    public void AddItem(ItemBase item, int count = 1)
+    {
+        var itemSlot = slots.FirstOrDefault(slot => slot.Item == item);
+        if (itemSlot != null)
+        {
+            itemSlot.Count += count;
+        }
+        else
+        {
+            // Sử dụng Constructor thay vì kiểu khởi tạo dấu ngoặc nhọn { }
+            slots.Add(new ItemSlot(item, count));
+        }
+    }
 }
 [Serializable]
 public class ItemSlot
@@ -48,5 +62,10 @@ public class ItemSlot
     {
         get => count;
         set => count = value;
+    }
+    public ItemSlot(ItemBase item, int count)
+    {
+        this.item = item;
+        this.count = count;
     }
 }

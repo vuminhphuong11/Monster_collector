@@ -20,6 +20,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] GameObject monsterBookSprite;
     [SerializeField] MoveSelectionUI moveSelectionUI;
     [SerializeField] InventoryUI inventoryUI;
+    [SerializeField] BossRewardUI rewardUI;
     Inventory inventory;
     bool playerSwitchedAfterFaint = false;
     bool enemySwitchedAfterFaint = false;
@@ -111,8 +112,33 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.BATTLEOVER;
         playerParty.Monsters.ForEach(p => p.OnBattleOver());
-        OnBattleOver(won);
 
+        if (won && isBossBattle)
+        {
+            StartCoroutine(ShowBossRewards());
+        }
+        else
+        {
+            OnBattleOver(won);
+        }
+    }
+    IEnumerator ShowBossRewards()
+    {
+        yield return dialogBox.TypeDialog("You defeated the Boss!");
+        rewardUI.ShowRewards();
+
+        bool rewardFinished = false;
+        // Sửa OnClose thành OnFinished và dùng += thay vì =
+        rewardUI.OnFinished += () => rewardFinished = true;
+
+        // Đợi người chơi bấm Z trong UI phần thưởng
+        while (!rewardFinished)
+        {
+            rewardUI.HandleUpdate();
+            yield return null;
+        }
+
+        OnBattleOver(true); // Kết thúc trận đấu sau khi nhận thưởng
     }
     void ActionSelection()
     {
