@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Focus
   m_EditorClassIdentifier: 
   name: Focus
-  description: help your monster get our form confuse
+  description: "Removes the Confusion effect, restoring the monster\u2019s clarity"
   icon: {fileID: 1809054225, guid: d3d7bc000eefa0a429e15b43259deb10, type: 3}
   hpAmount: 0
   restoreMaxHp: 0

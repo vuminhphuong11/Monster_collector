@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PazalizeOut
   m_EditorClassIdentifier: 
   name: PazalizeOut
-  description: help monster get out from Pazalize
+  description: Removes the Paralyze effect, allowing the monster to act freely again
   icon: {fileID: -1384849797, guid: d3d7bc000eefa0a429e15b43259deb10, type: 3}
   hpAmount: 0
   restoreMaxHp: 0

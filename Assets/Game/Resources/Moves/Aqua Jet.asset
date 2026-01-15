@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d3eb579e546b245b3b73c7260c77f7, type: 3}
+  m_Name: Aqua Jet
+  m_EditorClassIdentifier: 
+  _name: Aqua Jet
+  description: 
+  type: 2
+  power: 70
+  accuracy: 96
+  alwaysHits: 0
+  pp: 7
+  category: 1
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries:
+  - boosts:
+    - stat: 0
+      boost: 1
+    status: 0
+    volatileStatus: 0
+    chance: 100
+    target: 1
+  target: 0

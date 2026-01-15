@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158a649476d2fa5439246352d583a357, type: 3}
+  m_Name: Metal Gremlin
+  m_EditorClassIdentifier: 
+  _name: Metal Gremlin
+  description: 
+  leftSprite: {fileID: 21300000, guid: 9ea8ddbdaa2f17b4499ca8036f228a95, type: 3}
+  rightSprite: {fileID: 21300000, guid: 200074b5b44944a45ab9a448de3d8ebb, type: 3}
+  type1: 4
+  type2: 1
+  maxHP: 70
+  attack: 87
+  defense: 62
+  spAttack: 87
+  spDefense: 59
+  speed: 84
+  expYield: 108
+  growthRate: 0
+  catchRate: 109
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 7bf75e062abb0654d88e4434fbcc72c8, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 7bf75e062abb0654d88e4434fbcc72c8, type: 2}
+    level: 9
+  - moveBase: {fileID: 11400000, guid: 45f011a01cb9a3a48afa68b3cb5213fa, type: 2}
+    level: 2
+  - moveBase: {fileID: 11400000, guid: 45f011a01cb9a3a48afa68b3cb5213fa, type: 2}
+    level: 22
+  - moveBase: {fileID: 11400000, guid: ca2f14ebb86d8f5418c4a912d9c80fcf, type: 2}
+    level: 5
+  - moveBase: {fileID: 11400000, guid: ca2f14ebb86d8f5418c4a912d9c80fcf, type: 2}
+    level: 21
+  - moveBase: {fileID: 11400000, guid: c0a6ac1b45017d44e90d93c5d57a89a0, type: 2}
+    level: 19
+  - moveBase: {fileID: 11400000, guid: c0a6ac1b45017d44e90d93c5d57a89a0, type: 2}
+    level: 8
+  - moveBase: {fileID: 11400000, guid: d8c868e7b066f9340b26d9eeba359b83, type: 2}
+    level: 20
+  - moveBase: {fileID: 11400000, guid: d8c868e7b066f9340b26d9eeba359b83, type: 2}
+    level: 17
+  - moveBase: {fileID: 11400000, guid: 0f0f41f6a349cf243a9d9d222ed23308, type: 2}
+    level: 7
+  - moveBase: {fileID: 11400000, guid: 0f0f41f6a349cf243a9d9d222ed23308, type: 2}
+    level: 16
+  - moveBase: {fileID: 11400000, guid: 585ee6086db372c479cbb3d68b8c6050, type: 2}
+    level: 14
+  - moveBase: {fileID: 11400000, guid: 37328585ae7b5404d80262cc4b38b161, type: 2}
+    level: 12
+  - moveBase: {fileID: 11400000, guid: e1a1861efde71104baa2360635c02717, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 98e76759d2740cd45892bdee4c37a921, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 2879bd0ff4ae78c48b73494762fdc7ec, type: 2}
+    level: 11
+  - moveBase: {fileID: 11400000, guid: cb160b8d09ba43341ad3343752543fc5, type: 2}
+    level: 10
+  - moveBase: {fileID: 11400000, guid: 23760990ee116d84da4015980c378d7f, type: 2}
+    level: 1

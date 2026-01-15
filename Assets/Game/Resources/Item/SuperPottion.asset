@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SuperPottion
   m_EditorClassIdentifier: 
   name: SuperPottion
-  description: 50 hp
+  description: Heals the monster for 50 HP
   icon: {fileID: 1919834766, guid: 009271d67b9437847b501b787448b41f, type: 3}
   hpAmount: 50
   restoreMaxHp: 1

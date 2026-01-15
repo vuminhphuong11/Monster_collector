@@ -144,17 +144,30 @@ public class InventoryUI : MonoBehaviour
         bool showDownArrow = scrollIndex < (slotUIList.Count - itemsInViewpost);
         downArrow.gameObject.SetActive(showDownArrow);
     }
+    // Trong file InventoryUI.cs
     void OpenMonsterStorageUI()
     {
-        state = InventoryUIState.PartySelection;
-        // 1. Bật Storage
-        partyScreen.gameObject.SetActive(true);
-        // 2. TẮT INVENTORY (Để không hiện đè nhau)
-        this.gameObject.SetActive(false);
-        // 3. Lấy đúng Party của Player
-        var playerParty = FindObjectOfType<PlayerController>().GetComponent<MonsterParty>();
-        // 4. Bật chế độ chọn bên Storage
+        // 1. Lấy Party của Player trước để đảm bảo dữ liệu tồn tại
+        var playerController = FindObjectOfType<PlayerController>();
+        if (playerController == null)
+        {
+            Debug.LogError("Không tìm thấy PlayerController!");
+            return;
+        }
+        var playerParty = playerController.GetComponent<MonsterParty>();
+
+        // 2. Bật chế độ chọn bên Storage (Setup dữ liệu TRƯỚC khi tắt Inventory)
+        // Nếu dòng này bị lỗi (ví dụ MonsterStorage chưa có), game sẽ báo lỗi nhưng Inventory vẫn còn đó -> Không bị đơ.
         partyScreen.EnableSelectionMode(playerParty, OnMonsterSelected, CloseMonsterStorageUI);
+
+        // 3. Bật Storage UI
+        partyScreen.gameObject.SetActive(true);
+
+        // 4. Cập nhật State
+        state = InventoryUIState.PartySelection;
+
+        // 5. Cuối cùng mới tắt Inventory
+        this.gameObject.SetActive(false);
     }
     void OnMonsterSelected(Monster selectedMonster)
     {

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PoisonBreaker
   m_EditorClassIdentifier: 
   name: PoisionBreaker
-  description: cures from poision
+  description: Eliminates the Poison status.
   icon: {fileID: 83155020, guid: d3d7bc000eefa0a429e15b43259deb10, type: 3}
   hpAmount: 0
   restoreMaxHp: 0

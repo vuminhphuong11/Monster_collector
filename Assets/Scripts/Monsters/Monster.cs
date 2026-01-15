@@ -164,18 +164,18 @@ public class Monster
         // 1.035f nghĩa là tăng 3.5% mỗi cấp (Lãi kép).
         // Level 13 ~ x1.5 lần Base
         // Level 27 ~ x2.5 lần Base (Mạnh gấp rưỡi Level 13)
-        float atkgrowthRate = 1.1f;
-        float defgrowthRate = 1.05f;
+        float atkgrowthRate = 1.15f;
+        float defgrowthRate = 1.04f;
 
-        Stats.Add(Stat.Attack, Mathf.FloorToInt(Base.Attack * Mathf.Pow(atkgrowthRate, Level)) + 5);
+        Stats.Add(Stat.Attack, Mathf.FloorToInt(Base.Attack * Mathf.Pow(atkgrowthRate, Level)) + 17);
         Stats.Add(Stat.Defense, Mathf.FloorToInt(Base.Defense * Mathf.Pow(defgrowthRate, Level)) + 5);
-        Stats.Add(Stat.SpAttack, Mathf.FloorToInt(Base.SpAttack * Mathf.Pow(atkgrowthRate, Level)) + 5);
+        Stats.Add(Stat.SpAttack, Mathf.FloorToInt(Base.SpAttack * Mathf.Pow(atkgrowthRate, Level)) + 17);
         Stats.Add(Stat.SpDefense, Mathf.FloorToInt(Base.SpDefense * Mathf.Pow(defgrowthRate, Level)) + 5);
         Stats.Add(Stat.Speed, Mathf.FloorToInt(Base.Speed * Mathf.Pow(atkgrowthRate, Level)) + 5);
 
         // --- CÔNG THỨC MÁU (HP) ---
 
-        float hpMultiplier = Mathf.Pow(1.03f, Level); // HP tăng 4% mỗi cấp
+        float hpMultiplier = Mathf.Pow(1.05f, Level); // HP tăng 4% mỗi cấp
         MaxHP = Mathf.FloorToInt((Base.MaxHP * hpMultiplier) + (Level * 2) + 10);
     }
 

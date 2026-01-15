@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MaxPotion
   m_EditorClassIdentifier: 
   name: MaxPottion
-  description: max hp recovery
+  description: "Fully restores the monster\u2019s HP."
   icon: {fileID: 1069373622, guid: 009271d67b9437847b501b787448b41f, type: 3}
   hpAmount: 0
   restoreMaxHp: 1

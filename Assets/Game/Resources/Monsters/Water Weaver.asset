@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158a649476d2fa5439246352d583a357, type: 3}
+  m_Name: Water Weaver
+  m_EditorClassIdentifier: 
+  _name: Water Weaver
+  description: 
+  leftSprite: {fileID: 21300000, guid: 5432dabc617b4fb459224ec23996ef05, type: 3}
+  rightSprite: {fileID: 21300000, guid: 13d455f90ff71a34f918779b5f144932, type: 3}
+  type1: 2
+  type2: 6
+  maxHP: 73
+  attack: 83
+  defense: 69
+  spAttack: 85
+  spDefense: 76
+  speed: 82
+  expYield: 121
+  growthRate: 0
+  catchRate: 234
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 099e3e7ff7d15f5408c36cd1b597280b, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 6ed70f43e68a93f4ea3cdc7b595ed7a9, type: 2}
+    level: 14
+  - moveBase: {fileID: 11400000, guid: 099e3e7ff7d15f5408c36cd1b597280b, type: 2}
+    level: 17
+  - moveBase: {fileID: 11400000, guid: b4fd1207556fe7e48a2ecdbc7879cdb7, type: 2}
+    level: 13
+  - moveBase: {fileID: 11400000, guid: 6ed70f43e68a93f4ea3cdc7b595ed7a9, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 25272aa287e647e44ba929355e796918, type: 2}
+    level: 11
+  - moveBase: {fileID: 11400000, guid: b4fd1207556fe7e48a2ecdbc7879cdb7, type: 2}
+    level: 15
+  - moveBase: {fileID: 11400000, guid: 3bdeceda3e3b2634d9742165daebe2e2, type: 2}
+    level: 9
+  - moveBase: {fileID: 11400000, guid: 25272aa287e647e44ba929355e796918, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 4091e895a489d6a429ab64314bfca78b, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 3bdeceda3e3b2634d9742165daebe2e2, type: 2}
+    level: 8
+  - moveBase: {fileID: 11400000, guid: 585ee6086db372c479cbb3d68b8c6050, type: 2}
+    level: 7
+  - moveBase: {fileID: 11400000, guid: 4091e895a489d6a429ab64314bfca78b, type: 2}
+    level: 6
+  - moveBase: {fileID: 11400000, guid: cb160b8d09ba43341ad3343752543fc5, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 585ee6086db372c479cbb3d68b8c6050, type: 2}
+    level: 5
+  - moveBase: {fileID: 11400000, guid: 37328585ae7b5404d80262cc4b38b161, type: 2}
+    level: 4
+  - moveBase: {fileID: 11400000, guid: cb160b8d09ba43341ad3343752543fc5, type: 2}
+    level: 2
+  - moveBase: {fileID: 11400000, guid: e1a1861efde71104baa2360635c02717, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 98e76759d2740cd45892bdee4c37a921, type: 2}
+    level: 16

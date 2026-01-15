@@ -10366,16 +10366,24 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5609199635851185957, guid: 86405bc45a1962442b6ce0861d320300, type: 3}
+      propertyPath: monsters.Array.data[0]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: c3aab91f574ab2f4c9cdee72bd6e27b8, type: 2}
+    - target: {fileID: 5609199635851185957, guid: 86405bc45a1962442b6ce0861d320300, type: 3}
       propertyPath: monsters.Array.data[0].level
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5609199635851185957, guid: 86405bc45a1962442b6ce0861d320300, type: 3}
-      propertyPath: monsters.Array.data[2]._base
+      propertyPath: monsters.Array.data[1]._base
       value: 
       objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
     - target: {fileID: 5609199635851185957, guid: 86405bc45a1962442b6ce0861d320300, type: 3}
+      propertyPath: monsters.Array.data[2]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: da098425c13961d4d9b71177199f8b6d, type: 2}
+    - target: {fileID: 5609199635851185957, guid: 86405bc45a1962442b6ce0861d320300, type: 3}
       propertyPath: monsters.Array.data[2].level
-      value: 27
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7486256274468603122, guid: 86405bc45a1962442b6ce0861d320300, type: 3}
       propertyPath: uniqueId
@@ -10428,17 +10436,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9137119515805245544, guid: 86405bc45a1962442b6ce0861d320300, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8643964109909895092}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86405bc45a1962442b6ce0861d320300, type: 3}
 --- !u!114 &4330016059496769254 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2061856316028034354, guid: 86405bc45a1962442b6ce0861d320300, type: 3}
   m_PrefabInstance: {fileID: 2344794097764907988}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6793662467268008892}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f464e95ba8de6204894e11638924cbe4, type: 3}
@@ -10449,42 +10454,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8749345933631623166, guid: 86405bc45a1962442b6ce0861d320300, type: 3}
   m_PrefabInstance: {fileID: 2344794097764907988}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6793662467268008892 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9137119515805245544, guid: 86405bc45a1962442b6ce0861d320300, type: 3}
-  m_PrefabInstance: {fileID: 2344794097764907988}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8643964109909895092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6793662467268008892}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9719b136629cce149937ac422ab2d290, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slots:
-  - item: {fileID: 11400000, guid: 1d68ba7112f92a2429a48e7bb6cb9a57, type: 2}
-    count: 3
-  - item: {fileID: 11400000, guid: e2cb28176d40c20449c6490e0bb0e9c0, type: 2}
-    count: 7
-  - item: {fileID: 11400000, guid: 339bbeda3c9522546a2187a7601d1ef0, type: 2}
-    count: 7
-  - item: {fileID: 11400000, guid: e76df6de922f4e74c9b7b5a13b72930e, type: 2}
-    count: 7
-  - item: {fileID: 11400000, guid: c0696cbed9a0e49439ce4765f993c1a5, type: 2}
-    count: 9
-  - item: {fileID: 11400000, guid: 4352b47a560701742b8e3633908dc606, type: 2}
-    count: 7
-  - item: {fileID: 11400000, guid: f29832df5c3ca98459cab377a18a9067, type: 2}
-    count: 13
-  - item: {fileID: 11400000, guid: 4b373d4ffed7ad64080cd3784f6b71af, type: 2}
-    count: 10
-  - item: {fileID: 11400000, guid: 55e2aeeb79bac8c42aa4c15d283f75b2, type: 2}
-    count: 14
 --- !u!20 &7125164571846016859 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 4786141827816342671, guid: 86405bc45a1962442b6ce0861d320300, type: 3}

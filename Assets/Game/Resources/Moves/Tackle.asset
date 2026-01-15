@@ -15,10 +15,10 @@ MonoBehaviour:
   _name: Tackle
   description: 
   type: 0
-  power: 40
+  power: 70
   accuracy: 100
   alwaysHits: 0
-  pp: 5
+  pp: 8
   category: 0
   effects:
     boosts: []

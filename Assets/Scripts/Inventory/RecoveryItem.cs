@@ -32,16 +32,26 @@ public class RecoveryItem : ItemBase
             }
         }
 
-        // 2. XỬ LÝ TRẠNG THÁI (STATUS)
+        // 2. XỬ LÝ TRẠNG THÁI (STATUS & VOLATILE STATUS)
         // Nếu item chữa tất cả (Full Heal) hoặc chữa đúng bệnh đang mắc
         if (recoverAllStatus || status != ConditionID.none)
         {
+            // --- Logic cũ: Chữa Status chính (Psn, Brn, Slp...) ---
             if (monster.Status != null)
             {
-                // Nếu chữa tất cả HOẶC bệnh của quái trùng với bệnh item chữa được
                 if (recoverAllStatus || monster.Status.id == status)
                 {
                     monster.CureStatus();
+                    isUsed = true;
+                }
+            }
+
+            // --- THÊM LOGIC MỚI: Chữa Volatile Status (Confusion) ---
+            if (monster.VolatileStatus != null)
+            {
+                if (recoverAllStatus || monster.VolatileStatus.id == status)
+                {
+                    monster.CureVolatileStatus();
                     isUsed = true;
                 }
             }
@@ -61,7 +71,6 @@ public class RecoveryItem : ItemBase
             }
         }
 
-        // Trả về true nếu có bất kỳ thay đổi nào, false nếu không dùng được
         return isUsed;
     }
 

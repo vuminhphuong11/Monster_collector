@@ -24310,7 +24310,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
+      objectReference: {fileID: 11400000, guid: 71f5e1d60c3934c47988b1394a4abc55, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
       value: 14
@@ -24318,7 +24318,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: 557356d616656f34a95f986a6351eb20, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1].level
       value: 10
@@ -24326,7 +24326,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[2]._base
       value: 
-      objectReference: {fileID: 11400000, guid: 7be9bf5a43a440240831b1c0887712dd, type: 2}
+      objectReference: {fileID: 11400000, guid: e959402087042504fa248970b80500bc, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[2].level
       value: 10
@@ -24511,7 +24511,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
+      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
       value: 21
@@ -24519,7 +24519,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: 4b04c1b70ac5c35469aad491e2f0f028, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1].level
       value: 17
@@ -24527,7 +24527,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[2]._base
       value: 
-      objectReference: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
+      objectReference: {fileID: 11400000, guid: 9427e97aefb23fa4f8f35772ab6fff1d, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[2].level
       value: 19
@@ -24675,6 +24675,10 @@ PrefabInstance:
       value: NPC (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: timeBetWeenPattern
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -24704,6 +24708,14 @@ PrefabInstance:
       propertyPath: dialog.lines.Array.data[5]
       value: "I\u2019d rather not have to scrape your remains off the path tomorrow
         morning"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[1].x
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[2].x
+      value: -11
       objectReference: {fileID: 0}
     - target: {fileID: 7011329276302023766, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: walkUpSprite.Array.size
@@ -24889,7 +24901,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: b96449ac6fa60c74185c9a12c1806f6a, type: 2}
+      objectReference: {fileID: 11400000, guid: 7166f0536e1e01545a55388f2abe4b39, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
       value: 7
@@ -25143,7 +25155,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: c633b22e2d4c4c948871cf941fa45833, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1].level
       value: 13
@@ -25151,7 +25163,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[2]._base
       value: 
-      objectReference: {fileID: 11400000, guid: b96449ac6fa60c74185c9a12c1806f6a, type: 2}
+      objectReference: {fileID: 11400000, guid: 16f23c2584620894ea2545cc5c590f27, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[2].level
       value: 13
@@ -25341,7 +25353,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
+      objectReference: {fileID: 11400000, guid: e959402087042504fa248970b80500bc, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
       value: 8
@@ -25349,7 +25361,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: 0d2f2a0f3c689e34bafff6226e7bfcfd, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1].level
       value: 9
@@ -25612,7 +25624,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
+      objectReference: {fileID: 11400000, guid: b339303d627a21d43b49059ff6115b6a, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
       value: 5
@@ -25620,7 +25632,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: 16f23c2584620894ea2545cc5c590f27, type: 2}
     - target: {fileID: 6753673322286563127, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: name
       value: Taylor
@@ -25797,7 +25809,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
+      objectReference: {fileID: 11400000, guid: 36e64e39c4b14c34c8afc02e10212699, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
       value: 7
@@ -25805,7 +25817,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: 367b66016e47e9449b4f4fc87e777013, type: 2}
     - target: {fileID: 6753673322286563127, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: name
       value: River
@@ -26003,7 +26015,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
+      objectReference: {fileID: 11400000, guid: 53359096d3f14c7439727239f4256a8f, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
       value: 7
@@ -26011,7 +26023,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: fc6ffcd966a80f246ac5aad69dba5ea5, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1].level
       value: 8
@@ -26204,7 +26216,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
+      objectReference: {fileID: 11400000, guid: b339303d627a21d43b49059ff6115b6a, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
       value: 14
@@ -26212,7 +26224,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: 97a8186c804e74d4ab98657055e1e867, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1].level
       value: 10
@@ -26407,7 +26419,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
+      objectReference: {fileID: 11400000, guid: da098425c13961d4d9b71177199f8b6d, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
       value: 7
@@ -26415,7 +26427,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: 56cb7d3ba2a819249ae4edff05789003, type: 2}
     - target: {fileID: 6753673322286563127, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: name
       value: Skylar
@@ -26600,7 +26612,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
+      objectReference: {fileID: 11400000, guid: 97a8186c804e74d4ab98657055e1e867, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
       value: 11
@@ -26608,7 +26620,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1].level
       value: 12
@@ -26616,7 +26628,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[2]._base
       value: 
-      objectReference: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
+      objectReference: {fileID: 11400000, guid: a89123c946bdd8b4689f6c349778d6c9, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[2].level
       value: 12
@@ -26765,6 +26777,22 @@ PrefabInstance:
       value: hero'. Maybe by then, you'll actually look like you belong in a battle
         system instead of a hospital."
       objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[0].y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[1].x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[2].x
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[3].y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7011329276302023766, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: walkUpSprite.Array.size
       value: 4
@@ -26851,7 +26879,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7058427488869667541, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.29
+      value: 14.41
       objectReference: {fileID: 0}
     - target: {fileID: 7058427488869667541, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -67374,7 +67402,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
+      objectReference: {fileID: 11400000, guid: b96449ac6fa60c74185c9a12c1806f6a, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
       value: 7
@@ -67382,7 +67410,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: 0d2f2a0f3c689e34bafff6226e7bfcfd, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1].level
       value: 7
@@ -67542,7 +67570,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: timeBetWeenPattern
-      value: 10
+      value: 4.6
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.size
@@ -67568,6 +67596,46 @@ PrefabInstance:
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.data[4]
       value: Only then will you have the privilege of... running away successfully.
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[0].y
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[1].x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[2].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[2].y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[3].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[3].y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[4].x
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[5].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[5].y
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7011329276302023766, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: walkUpSprite.Array.size
@@ -67814,7 +67882,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
+      objectReference: {fileID: 11400000, guid: 367b66016e47e9449b4f4fc87e777013, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
       value: 19
@@ -67822,7 +67890,7 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1].level
       value: 14
@@ -68072,15 +68140,15 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: dc375e404a201204884c2961996dd0aa, type: 2}
+      objectReference: {fileID: 11400000, guid: 36e64e39c4b14c34c8afc02e10212699, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1]._base
       value: 
-      objectReference: {fileID: 11400000, guid: be286bb2e5b15b144a76c5b73f0dd441, type: 2}
+      objectReference: {fileID: 11400000, guid: da098425c13961d4d9b71177199f8b6d, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[1].level
       value: 4
@@ -68088,10 +68156,10 @@ PrefabInstance:
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[2]._base
       value: 
-      objectReference: {fileID: 11400000, guid: a072343336ad5aa43ae211fe70b46d7e, type: 2}
+      objectReference: {fileID: 11400000, guid: 71f5e1d60c3934c47988b1394a4abc55, type: 2}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[2].level
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6753673322286563127, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: name
@@ -68252,7 +68320,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.size
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.data[0]
@@ -68265,13 +68333,64 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.data[2]
-      value: Instead of wasting money on medicine you won't live long enough to swallow,
-        why don't you spend some time bullying weaklings to gain some EXP?
+      value: 'Instead of wasting money on medicine you won''t live long enough to
+        swallow, '
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.data[3]
-      value: "Come back when your level is higher than my blood pressure, and maybe
-        I\u2019ll give you a discount."
+      value: why don't you spend some time bullying weaklings to gain some EXP?
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: dialog.lines.Array.data[4]
+      value: 'Come back when your level is higher than my blood pressure, '
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: dialog.lines.Array.data[5]
+      value: "and maybe I\u2019ll give you a discount."
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[0].y
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[1].x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[2].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[2].y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[3].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[3].y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[4].x
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[4].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[5].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
+      propertyPath: movementPattenr.Array.data[5].y
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7011329276302023766, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: walkUpSprite.Array.size
@@ -68481,34 +68600,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.size
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.data[0]
-      value: "Halt! I\u2019m under strict orders to prevent obvious suicide missions."
+      value: Hey there! Press Enter to open the menu
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.data[1]
-      value: Seeing your current Level, letting you through would count as a war
-        crime
+      value: Use Z to choose an option
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.data[2]
-      value: "I\u2019m not writing a three-page report explaining why a rookie turned
-        into monster fertilizer"
+      value: X to exit
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.data[3]
-      value: See those scarecrows?
+      value: and B to go back anytime.
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.data[4]
-      value: When you can actually beat one without your monster fainting from the
-        effort,
+      value: In battle, use Z to select and X to cancel your choice.
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.data[5]
-      value: hen we can talk about you leaving.
+      value: "Until then, stay inside where it\u2019s safe and embarrassing.\""
       objectReference: {fileID: 0}
     - target: {fileID: 2879168420635078504, guid: 0e6e4b04e036d884a89c20e9868502e2, type: 3}
       propertyPath: dialog.lines.Array.data[6]
@@ -68701,8 +68817,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
+      propertyPath: monsters.Array.data[0]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: c633b22e2d4c4c948871cf941fa45833, type: 2}
+    - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: monsters.Array.data[0].level
-      value: 5
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
+      propertyPath: monsters.Array.data[1]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: 71f5e1d60c3934c47988b1394a4abc55, type: 2}
+    - target: {fileID: 4735719286553968861, guid: 205b5c5441caf834199637b179047524, type: 3}
+      propertyPath: monsters.Array.data[1].level
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6753673322286563127, guid: 205b5c5441caf834199637b179047524, type: 3}
       propertyPath: name

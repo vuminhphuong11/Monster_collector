@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158a649476d2fa5439246352d583a357, type: 3}
+  m_Name: Dark Viper
+  m_EditorClassIdentifier: 
+  _name: Dark Viper
+  description: 
+  leftSprite: {fileID: 21300000, guid: 8f54357e5cff1bf49b6a20f7cf51e1a3, type: 3}
+  rightSprite: {fileID: 21300000, guid: 2e18c3c6560064c459b4d359c09a9390, type: 3}
+  type1: 10
+  type2: 11
+  maxHP: 71
+  attack: 88
+  defense: 68
+  spAttack: 89
+  spDefense: 67
+  speed: 86
+  expYield: 99
+  growthRate: 0
+  catchRate: 173
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: c393b635482166443b8d2dc9674f79d4, type: 2}
+    level: 5
+  - moveBase: {fileID: 11400000, guid: c393b635482166443b8d2dc9674f79d4, type: 2}
+    level: 18
+  - moveBase: {fileID: 11400000, guid: c393b635482166443b8d2dc9674f79d4, type: 2}
+    level: 11
+  - moveBase: {fileID: 11400000, guid: 8bcfd26cc3e50d64e81d485324580e2a, type: 2}
+    level: 20
+  - moveBase: {fileID: 11400000, guid: 8bcfd26cc3e50d64e81d485324580e2a, type: 2}
+    level: 1
+  - moveBase: {fileID: 11400000, guid: 8bcfd26cc3e50d64e81d485324580e2a, type: 2}
+    level: 10
+  - moveBase: {fileID: 11400000, guid: 8b50019b23e5e374597a7e29f51d8688, type: 2}
+    level: 17
+  - moveBase: {fileID: 11400000, guid: 8b50019b23e5e374597a7e29f51d8688, type: 2}
+    level: 3
+  - moveBase: {fileID: 11400000, guid: 8b50019b23e5e374597a7e29f51d8688, type: 2}
+    level: 21
+  - moveBase: {fileID: 11400000, guid: a3dac952b8cad8e48896375ab0eea9fc, type: 2}
+    level: 9
+  - moveBase: {fileID: 11400000, guid: a3dac952b8cad8e48896375ab0eea9fc, type: 2}
+    level: 23
+  - moveBase: {fileID: 11400000, guid: a3dac952b8cad8e48896375ab0eea9fc, type: 2}
+    level: 16
+  - moveBase: {fileID: 11400000, guid: ccb380bf352eded48a78be03e6094317, type: 2}
+    level: 22
+  - moveBase: {fileID: 11400000, guid: ccb380bf352eded48a78be03e6094317, type: 2}
+    level: 24
+  - moveBase: {fileID: 11400000, guid: ccb380bf352eded48a78be03e6094317, type: 2}
+    level: 8
+  - moveBase: {fileID: 11400000, guid: 5b28132cf59af034db68dc15eb836263, type: 2}
+    level: 15
+  - moveBase: {fileID: 11400000, guid: 5b28132cf59af034db68dc15eb836263, type: 2}
+    level: 25
+  - moveBase: {fileID: 11400000, guid: 5b28132cf59af034db68dc15eb836263, type: 2}
+    level: 28
+  - moveBase: {fileID: 11400000, guid: e1a1861efde71104baa2360635c02717, type: 2}
+    level: 26
+  - moveBase: {fileID: 11400000, guid: e1a1861efde71104baa2360635c02717, type: 2}
+    level: 14
+  - moveBase: {fileID: 11400000, guid: e1a1861efde71104baa2360635c02717, type: 2}
+    level: 29
+  - moveBase: {fileID: 11400000, guid: 37328585ae7b5404d80262cc4b38b161, type: 2}
+    level: 27
+  - moveBase: {fileID: 11400000, guid: 37328585ae7b5404d80262cc4b38b161, type: 2}
+    level: 7
+  - moveBase: {fileID: 11400000, guid: 37328585ae7b5404d80262cc4b38b161, type: 2}
+    level: 13
+  - moveBase: {fileID: 11400000, guid: 585ee6086db372c479cbb3d68b8c6050, type: 2}
+    level: 30
+  - moveBase: {fileID: 11400000, guid: 585ee6086db372c479cbb3d68b8c6050, type: 2}
+    level: 19
+  - moveBase: {fileID: 11400000, guid: 585ee6086db372c479cbb3d68b8c6050, type: 2}
+    level: 4
+  - moveBase: {fileID: 11400000, guid: 23760990ee116d84da4015980c378d7f, type: 2}
+    level: 6
+  - moveBase: {fileID: 11400000, guid: 23760990ee116d84da4015980c378d7f, type: 2}
+    level: 12
+  - moveBase: {fileID: 11400000, guid: 23760990ee116d84da4015980c378d7f, type: 2}
+    level: 1

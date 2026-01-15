@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SleepWakening
   m_EditorClassIdentifier: 
   name: SleepWakening
-  description: wake up your Monster from sleep
+  description: Removes the Sleep status
   icon: {fileID: 477981064, guid: d3d7bc000eefa0a429e15b43259deb10, type: 3}
   hpAmount: 0
   restoreMaxHp: 0

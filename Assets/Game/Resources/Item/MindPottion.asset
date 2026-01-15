@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MindPottion
   m_EditorClassIdentifier: 
   name: MindPottion
-  description: get out form all debuff status
+  description: Removes all negative status effects from the monster.
   icon: {fileID: -1902851979, guid: d3d7bc000eefa0a429e15b43259deb10, type: 3}
   hpAmount: 0
   restoreMaxHp: 0
