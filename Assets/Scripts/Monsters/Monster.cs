@@ -122,14 +122,35 @@ public class Monster
             }
         }
     }
-    public void CycleMove(Move moveUsed)
+    // Thay đổi kiểu trả về từ void -> bool
+    public bool CycleMove(Move moveUsed)
     {
-        // Kiểm tra xem chiêu vừa dùng có trong danh sách không
+        // 1. Logic cũ: Đẩy chiêu vừa dùng xuống cuối
         if (Moves.Contains(moveUsed))
         {
-            Moves.Remove(moveUsed); // Xóa khỏi vị trí hiện tại
-            Moves.Add(moveUsed);    // Thêm vào cuối danh sách
+            Moves.Remove(moveUsed);
+            Moves.Add(moveUsed);
         }
+
+        // 2. Logic lọc chiêu hết PP
+        int checkCount = 0;
+        // Lặp để tìm chiêu có PP > 0
+        while (Moves.Count > 0 && Moves[0].PP <= 0 && checkCount < Moves.Count)
+        {
+            var invalidMove = Moves[0];
+            Moves.RemoveAt(0);
+            Moves.Add(invalidMove);
+            checkCount++;
+        }
+
+        // 3. KIỂM TRA ĐIỀU KIỆN THUA
+        // Nếu checkCount bằng tổng số moves, nghĩa là đã quay một vòng mà không tìm thấy chiêu nào còn PP
+        if (checkCount >= Moves.Count)
+        {
+            return false; // Báo hiệu: Hết sạch đạn rồi!
+        }
+
+        return true; // Báo hiệu: Vẫn còn chiêu dùng được.
     }
     public Monster(MonsterSaveData saveData)
     {
@@ -411,7 +432,9 @@ public class Monster
     public void OnBattleOver()
     {
         VolatileStatus = null;
+        Status = null;
         ResetStatBoosts();
+        HealAllPP();
     }   
 }
 public class DamageDetails

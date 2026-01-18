@@ -288,8 +288,8 @@ public class BattleSystem : MonoBehaviour
         }
         yield return ShowStatusChanges(sourceUnit.Monster);
         move.PP--;
-        yield return dialogBox.TypeDialog(sourceUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
 
+        yield return dialogBox.TypeDialog(sourceUnit.Monster.Base.Name + " used " + move.Base.Name + "!");
         if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
         {
             sourceUnit.PlayAttackAnimation();
@@ -307,13 +307,13 @@ public class BattleSystem : MonoBehaviour
                 yield return ShowDamageDetails(damageDetails);
             }
 
-            // Xử lý Secondary Effects (Hiệu ứng phụ cho chiêu Damage)
+            // Xử lý Secondary Effects
             if (move.Base.Secondaries != null && move.Base.Secondaries.Count > 0 && targetUnit.Monster.HP > 0)
             {
                 foreach (var secondary in move.Base.Secondaries)
                 {
                     var rnd = UnityEngine.Random.Range(1, 101);
-                    if (rnd <= secondary.Chance) // Sửa thành <= cho chuẩn
+                    if (rnd <= secondary.Chance)
                     {
                         yield return RunMoveEffects(secondary, sourceUnit, targetUnit, secondary.Target);
                     }
@@ -330,8 +330,22 @@ public class BattleSystem : MonoBehaviour
             yield return dialogBox.TypeDialog(sourceUnit.Monster.Base.Name + "'s Attack missed!");
         }
 
-        sourceUnit.Monster.CycleMove(move);
+        bool hasMovesLeft = sourceUnit.Monster.CycleMove(move);
 
+        // Nếu là lượt của người chơi VÀ không còn chiêu nào dùng được
+        if (sourceUnit.IsPlayerUnit && !hasMovesLeft)
+        {
+            yield return dialogBox.TypeDialog($"{sourceUnit.Monster.Base.Name} has no moves left!");
+            yield return new WaitForSeconds(1f);
+            yield return dialogBox.TypeDialog("You have no moves left to fight!");
+            yield return new WaitForSeconds(1f);
+
+            // Gọi hàm kết thúc trận đấu với kết quả THUA
+            BattleOver(false);
+            yield break;
+        }
+
+        // Cập nhật lại UI danh sách chiêu (đã được đảo bởi CycleMove)
         if (sourceUnit.IsPlayerUnit)
         {
             dialogBox.SetMoveNames(sourceUnit.Monster.Moves);

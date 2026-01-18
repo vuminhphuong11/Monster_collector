@@ -188,7 +188,15 @@ public class GameController : MonoBehaviour
         {
             //bag
             inventoryUI.gameObject.SetActive(true);
-            state=GameState.Bag;
+            inventoryUI.OpenInventory(null, () =>
+            {
+                // Callback khi bấm nút X hoặc Back để thoát Inventory
+                inventoryUI.gameObject.SetActive(false);
+                state = GameState.Menu; // Hoặc FreeRoam tùy logic menu của bạn
+                menuController.OpenMenu(); // Mở lại menu để chọn tiếp
+            });
+
+            state = GameState.Bag;
             return;
         }
         else if(selectedItem == 2)
@@ -211,5 +219,9 @@ public class GameController : MonoBehaviour
 
         // Trả lại quyền điều khiển cho nhân vật
         state = GameState.FreeRoam;
+    }
+    public void SetState(GameState newState)
+    {
+        this.state = newState;
     }
 }
